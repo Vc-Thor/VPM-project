@@ -1,10 +1,22 @@
 version: '3'
 services:
+  backend:
+    build: ./VPM-restserver
+    container_name: Restserver-VPM
+    restart: always
+    networks:
+      - vpm-app
+    ports:
+      - "5000:5000"
+    depends_on:
+      - database
   database:
     image: mysql:8.0.33
     container_name: DATABASE-VPM-MYSQL
     ports:
       - '3306:3306'
+    networks:
+      - vpm-app
     environment:
       - MYSQL_ROOT_PASSWORD=1q2w3e4r
       - MYSQL_DATABASE=production_db
@@ -12,3 +24,5 @@ services:
       - MYSQL_PASSWORD=1q2w3e
     volumes:
       - ./data:/var/lib/mysql
+networks:
+  vpm-app:
