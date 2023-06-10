@@ -1,0 +1,14 @@
+version: '3'
+services:
+  database:
+    image: mysql:8.0.33
+    container_name: DATABASE-VPM-MYSQL
+    ports:
+      - '3306:3306'
+    environment:
+      - MYSQL_ROOT_PASSWORD=1q2w3e4r
+      - MYSQL_DATABASE=production_db
+      - MYSQL_USER=devHugo
+      - MYSQL_PASSWORD=1q2w3e
+    volumes:
+      - ./data:/var/lib/mysql
