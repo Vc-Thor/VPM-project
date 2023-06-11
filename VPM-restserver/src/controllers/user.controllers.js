@@ -32,7 +32,7 @@ export const userGetById = async (req = request, res = response) => {
   const { id } = req.params;
   const user = await User.findByPk(id, { include: [{ model: Role }] });
   if (user) {
-    res.status(400).json({
+    res.status(200).json({
       user,
     });
   } else {
