@@ -5,7 +5,11 @@ import { Project } from './project.models.js';
 export const SubArea = db.define(
   'subarea',
   {
-    id: { type: DataTypes.INTEGER, primaryKey: true },
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true,
+    },
     sub_area: { type: DataTypes.STRING },
   },
   {

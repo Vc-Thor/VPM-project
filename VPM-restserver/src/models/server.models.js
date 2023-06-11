@@ -4,6 +4,7 @@ import cors from 'cors';
 import { rolesRt } from '../routes/roles.routes.js';
 import { userRt } from '../routes/user.routes.js';
 import { authRT } from '../routes/auth.routes.js';
+import { areaRt } from '../routes/area.routes.js';
 export class Server {
   constructor() {
     this.app = express();
@@ -12,6 +13,7 @@ export class Server {
       roles: '/api/role',
       users: '/api/user',
       auth: '/api/auth',
+      area: '/api/area',
     };
     this.dbConnection();
     this.middlewares();
@@ -35,6 +37,7 @@ export class Server {
     this.app.use(this.paths.roles, rolesRt);
     this.app.use(this.paths.users, userRt);
     this.app.use(this.paths.auth, authRT);
+    this.app.use(this.paths.area, areaRt);
   }
 
   listen() {

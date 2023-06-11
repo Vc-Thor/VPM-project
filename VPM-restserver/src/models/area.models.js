@@ -5,7 +5,11 @@ import { Project } from './project.models.js';
 export const Area = db.define(
   'area',
   {
-    id: { type: DataTypes.INTEGER, primaryKey: true },
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true,
+    },
     area: { type: DataTypes.STRING },
   },
   {

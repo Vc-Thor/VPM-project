@@ -5,7 +5,11 @@ import { Project } from './project.models.js';
 export const Activiy = db.define(
   'activity',
   {
-    id: { type: DataTypes.INTEGER, primaryKey: true },
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true,
+    },
     activiy: { type: DataTypes.STRING },
   },
   {

@@ -1,9 +1,8 @@
 import { DataTypes } from 'sequelize';
 import db from '../database/config.db.js';
-import { Scenario } from './scenario.models.js';
 
-export const Vector = db.define(
-  'vector',
+export const ValueVector = db.define(
+  'valuevector',
   {
     id: {
       type: DataTypes.UUID,
@@ -11,20 +10,14 @@ export const Vector = db.define(
       primaryKey: true,
     },
     user_id: { type: DataTypes.UUID },
-    vector: { type: DataTypes.STRING },
+    vector_id: {
+      type: DataTypes.UUID,
+    },
     position: { type: DataTypes.INTEGER },
     value: { type: DataTypes.INTEGER },
   },
   {
-    tableName: 'Vector',
+    tableName: 'Valuevector',
     timestamps: false,
   },
 );
-Vector.hasMany(Scenario, {
-  foreignKey: 'vector_id',
-  sourceKey: 'id',
-});
-Scenario.belongsTo(Vector, {
-  foreignKey: 'vector_id',
-  targetKey: 'id',
-});

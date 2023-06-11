@@ -3,12 +3,17 @@ import db from '../database/config.db.js';
 import { Project } from './project.models.js';
 import { Vector } from './verctor.models.js';
 import { Scenario } from './scenario.models.js';
+import { ValueVector } from './valueVector.models.js';
 
 export const User = db.define(
   'user',
   {
-    id: { type: DataTypes.INTEGER, primaryKey: true },
-    role_id: { type: DataTypes.INTEGER },
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true,
+    },
+    role_id: { type: DataTypes.UUID },
     fname: { type: DataTypes.STRING },
     lname: { type: DataTypes.STRING },
     user_name: { type: DataTypes.STRING },
@@ -42,6 +47,14 @@ User.hasMany(Scenario, {
   sourceKey: 'id',
 });
 Scenario.belongsTo(User, {
+  foreignKey: 'user_id',
+  targetKey: 'id',
+});
+User.hasMany(ValueVector, {
+  foreignKey: 'user_id',
+  sourceKey: 'id',
+});
+ValueVector.belongsTo(User, {
   foreignKey: 'user_id',
   targetKey: 'id',
 });

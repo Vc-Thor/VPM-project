@@ -1,3 +1,4 @@
+import { Area } from '../models/area.models.js';
 import { Role } from '../models/roles.models.js';
 import { User } from '../models/user.models.js';
 
@@ -23,5 +24,17 @@ export const existsRole = async (role = '') => {
   const thereRole = await Role.findOne({ where: { role: role } });
   if (thereRole) {
     throw new Error(`this role: ${role} already exists`);
+  }
+};
+export const validatorArea = async (area = '') => {
+  const existsArea = await Area.findOne({ where: { area: area } });
+  if (existsArea) {
+    throw new Error(`this area: ${area} already exists`);
+  }
+};
+export const noArea = async (id = '') => {
+  const findArea = await Area.findOne({ where: { id: id } });
+  if (!findArea) {
+    throw new Error('there is no area');
   }
 };

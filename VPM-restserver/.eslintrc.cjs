@@ -9,5 +9,9 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  rules: { 'object-shorthand': 'off', camelcase: 'off' },
+  rules: {
+    'object-shorthand': 'off',
+    camelcase: 'off',
+    'lines-between-class-members': 'off',
+  },
 };

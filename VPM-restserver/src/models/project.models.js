@@ -5,13 +5,17 @@ import { Scenario } from './scenario.models.js';
 export const Project = db.define(
   'project',
   {
-    id: { type: DataTypes.INTEGER, primaryKey: true },
-    area_id: { type: DataTypes.INTEGER },
-    sub_area_id: { type: DataTypes.INTEGER },
-    airways_id: { type: DataTypes.INTEGER },
-    activity_id: { type: DataTypes.INTEGER },
-    criteria_id: { type: DataTypes.INTEGER },
-    user_id: { type: DataTypes.INTEGER },
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true,
+    },
+    area_id: { type: DataTypes.UUID },
+    sub_area_id: { type: DataTypes.UUID },
+    airways_id: { type: DataTypes.UUID },
+    activity_id: { type: DataTypes.UUID },
+    criteria_id: { type: DataTypes.UUID },
+    user_id: { type: DataTypes.UUID },
     position: { type: DataTypes.INTEGER },
   },
   {

@@ -5,10 +5,14 @@ import { Period } from './period.models.js';
 export const Scenario = db.define(
   'scenario',
   {
-    id: { type: DataTypes.INTEGER, primaryKey: true },
-    project_id: { type: DataTypes.INTEGER },
-    vector_id: { type: DataTypes.INTEGER },
-    user_id: { type: DataTypes.INTEGER },
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true,
+    },
+    project_id: { type: DataTypes.UUID },
+    vector_id: { type: DataTypes.UUID },
+    user_id: { type: DataTypes.UUID },
     availability: { type: DataTypes.INTEGER },
     power_input: { type: DataTypes.INTEGER },
     air_velocity: { type: DataTypes.INTEGER },
