@@ -24,5 +24,20 @@ export const areaPost = async (req = request, res = response) => {
     msg: 'area created correctly',
   });
 };
-export const areaPut = async (req = request, res = response) => {};
-export const areaDelete = async (req = request, res = response) => {};
+export const areaPut = async (req = request, res = response) => {
+  const uid = req.params.id;
+  const { id, ...resto } = req.body;
+  const upArea = await Area.findByPk(uid);
+  await upArea.update(resto);
+  res.json({
+    msg: 'update area',
+  });
+};
+export const areaDelete = async (req = request, res = response) => {
+  const uid = req.params.id;
+  const deleteArea = await Area.findByPk(uid);
+  await deleteArea.destroy({ where: { id: uid } });
+  res.status(200).json({
+    msg: 'delete area',
+  });
+};

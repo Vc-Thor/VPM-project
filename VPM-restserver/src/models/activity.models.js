@@ -2,7 +2,7 @@ import { DataTypes } from 'sequelize';
 import db from '../database/config.db.js';
 import { Project } from './project.models.js';
 
-export const Activiy = db.define(
+export const Activity = db.define(
   'activity',
   {
     id: {
@@ -10,18 +10,18 @@ export const Activiy = db.define(
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
-    activiy: { type: DataTypes.STRING },
+    activity: { type: DataTypes.STRING },
   },
   {
     tableName: 'Activity',
     timestamps: false,
   },
 );
-Activiy.hasMany(Project, {
+Activity.hasMany(Project, {
   foreignKey: 'activity_id',
   sourceKey: 'id',
 });
-Project.belongsTo(Activiy, {
+Project.belongsTo(Activity, {
   foreignKey: 'activity_id',
   targetKey: 'id',
 });

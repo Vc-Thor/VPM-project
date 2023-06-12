@@ -19,7 +19,15 @@ areaRt.post(
 );
 areaRt.put(
   '/:id',
-  [check('area').custom(validatorArea), fieldValidation],
+  [
+    check('id').custom(noArea),
+    check('area').custom(validatorArea),
+    fieldValidation,
+  ],
   areaPut,
 );
-areaRt.delete('/:id', [noArea], areaDelete);
+areaRt.delete(
+  '/:id',
+  [check('id').custom(noArea), fieldValidation],
+  areaDelete,
+);

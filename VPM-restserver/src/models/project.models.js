@@ -16,7 +16,7 @@ export const Project = db.define(
     activity_id: { type: DataTypes.UUID },
     criteria_id: { type: DataTypes.UUID },
     user_id: { type: DataTypes.UUID },
-    position: { type: DataTypes.INTEGER },
+    project: { type: DataTypes.STRING },
   },
   {
     tableName: 'Project',
