@@ -18,7 +18,7 @@ export const airwaysPost = async (req = request, res = response) => {
   const newAirways = {
     airways: airways,
   };
-  const addAirways = airways.build(newAirways);
+  const addAirways = Airways.build(newAirways);
   await addAirways.save();
   res.status(201).json({
     msg: 'airways created correctly',

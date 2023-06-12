@@ -18,7 +18,7 @@ export const activityPost = async (req = request, res = response) => {
   const newActivity = {
     activity: activity,
   };
-  const addActivity = activity.build(newActivity);
+  const addActivity = Activity.build(newActivity);
   await addActivity.save();
   res.status(201).json({
     msg: 'activity created correctly',

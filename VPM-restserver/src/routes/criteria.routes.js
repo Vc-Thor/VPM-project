@@ -14,14 +14,14 @@ export const criteriaRt = Router();
 criteriaRt.get('/criterias', criteriaGet);
 criteriaRt.post(
   '/newcriteria',
-  [check('sub_area').custom(validatorCriteria), fieldValidation],
+  [check('criteria').custom(validatorCriteria), fieldValidation],
   criteriaPost,
 );
 criteriaRt.put(
   '/:id',
   [
     check('id').custom(noCriteria),
-    check('sub_area').custom(validatorCriteria),
+    check('criteria').custom(validatorCriteria),
     fieldValidation,
   ],
   criteriaPut,

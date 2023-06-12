@@ -14,14 +14,14 @@ export const activityRt = Router();
 activityRt.get('/activitys', activityGet);
 activityRt.post(
   '/newactivity',
-  [check('sub_area').custom(validatorActivity), fieldValidation],
+  [check('activity').custom(validatorActivity), fieldValidation],
   activityPost,
 );
 activityRt.put(
   '/:id',
   [
     check('id').custom(noActivity),
-    check('sub_area').custom(validatorActivity),
+    check('activity').custom(validatorActivity),
     fieldValidation,
   ],
   activityPut,

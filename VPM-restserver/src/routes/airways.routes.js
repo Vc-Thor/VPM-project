@@ -14,14 +14,14 @@ export const airwaysRt = Router();
 airwaysRt.get('/airwayss', airwaysGet);
 airwaysRt.post(
   '/newairways',
-  [check('sub_area').custom(validatorAirways), fieldValidation],
+  [check('airways').custom(validatorAirways), fieldValidation],
   airwaysPost,
 );
 airwaysRt.put(
   '/:id',
   [
     check('id').custom(noAirways),
-    check('sub_area').custom(validatorAirways),
+    check('airways').custom(validatorAirways),
     fieldValidation,
   ],
   airwaysPut,
