@@ -1,6 +1,6 @@
 import { DataTypes } from 'sequelize';
 import db from '../database/config.db.js';
-import { Project } from './project.models.js';
+import { Vector } from './verctor.models.js';
 
 export const Activity = db.define(
   'activity',
@@ -17,11 +17,11 @@ export const Activity = db.define(
     timestamps: false,
   },
 );
-Activity.hasMany(Project, {
+Activity.hasMany(Vector, {
   foreignKey: 'activity_id',
   sourceKey: 'id',
 });
-Project.belongsTo(Activity, {
+Vector.belongsTo(Activity, {
   foreignKey: 'activity_id',
   targetKey: 'id',
 });

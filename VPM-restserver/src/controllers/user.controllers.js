@@ -11,7 +11,7 @@ export const userGet = async (req = request, res = response) => {
   if (user.length !== 0) {
     res.status(200).json({ user });
   } else {
-    res.status(404).json({
+    res.status(200).json({
       msg: 'no data in DB',
     });
   }
@@ -23,7 +23,7 @@ export const userGetAll = async (req = request, res = response) => {
   if (user.length !== 0) {
     res.status(200).json({ user });
   } else {
-    res.status(404).json({
+    res.status(200).json({
       msg: 'no data in DB',
     });
   }
@@ -36,7 +36,7 @@ export const userGetById = async (req = request, res = response) => {
       user,
     });
   } else {
-    res.status(404).json({
+    res.status(200).json({
       msg: 'user not found in DB',
     });
   }
@@ -61,28 +61,16 @@ export const userPut = async (req = request, res = response) => {
   const userId = req.params.id;
   const { id, ...resto } = req.body;
   const upUser = await User.findByPk(userId);
-  if (upUser) {
-    await upUser.update(resto);
-    res.status(200).json({
-      msg: 'update user',
-    });
-  } else {
-    res.status(400).json({
-      msg: 'user not found in DB',
-    });
-  }
+  await upUser.update(resto);
+  res.status(200).json({
+    msg: 'update user',
+  });
 };
 export const userDelete = async (req = request, res = response) => {
   const userId = req.params.id;
   const userExists = await User.findByPk(userId);
-  if (userExists) {
-    await userExists.update({ state: false });
-    res.status(200).json({
-      msg: 'user deleted',
-    });
-  } else {
-    res.status(400).json({
-      msg: 'user not found in DB',
-    });
-  }
+  await userExists.update({ state: false });
+  res.status(200).json({
+    msg: 'user deleted',
+  });
 };

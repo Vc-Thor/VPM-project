@@ -6,9 +6,9 @@ import { userRt } from '../routes/user.routes.js';
 import { authRT } from '../routes/auth.routes.js';
 import { areaRt } from '../routes/area.routes.js';
 import { subAreaRt } from '../routes/subArea.routes.js';
-import { airwaysRt } from '../routes/airways.routes.js';
 import { criteriaRt } from '../routes/criteria.routes.js';
 import { activityRt } from '../routes/activity.routes.js';
+import { projectRt } from '../routes/project.routes.js';
 export class Server {
   constructor() {
     this.app = express();
@@ -19,9 +19,9 @@ export class Server {
       auth: '/api/auth',
       area: '/api/area',
       subArea: '/api/subarea',
-      airways: '/api/airways',
       criteria: '/api/criteria',
       activity: '/api/activity',
+      project: '/api/project',
     };
     this.dbConnection();
     this.middlewares();
@@ -47,9 +47,9 @@ export class Server {
     this.app.use(this.paths.auth, authRT);
     this.app.use(this.paths.area, areaRt);
     this.app.use(this.paths.subArea, subAreaRt);
-    this.app.use(this.paths.airways, airwaysRt);
     this.app.use(this.paths.criteria, criteriaRt);
     this.app.use(this.paths.activity, activityRt);
+    this.app.use(this.paths.project, projectRt);
   }
 
   listen() {

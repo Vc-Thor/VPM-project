@@ -1,6 +1,6 @@
 import { DataTypes } from 'sequelize';
 import db from '../database/config.db.js';
-import { Project } from './project.models.js';
+import { Vector } from './verctor.models.js';
 
 export const Area = db.define(
   'area',
@@ -17,11 +17,11 @@ export const Area = db.define(
     timestamps: false,
   },
 );
-Area.hasMany(Project, {
+Area.hasMany(Vector, {
   foreignKey: 'area_id',
   sourceKey: 'id',
 });
-Project.belongsTo(Area, {
+Vector.belongsTo(Area, {
   foreignKey: 'area_id',
   targetKey: 'id',
 });

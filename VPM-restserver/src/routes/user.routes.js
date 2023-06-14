@@ -10,6 +10,7 @@ import {
 import { fieldValidation } from '../middlewares/field-validation.js';
 import { check } from 'express-validator';
 import {
+  noUser,
   validatorEmail,
   validatorRole,
   validatorUserName,
@@ -38,5 +39,9 @@ userRt.post(
   ],
   userPost,
 );
-userRt.put('/:id', [fieldValidation], userPut);
-userRt.delete('/:id', [fieldValidation], userDelete);
+userRt.put('/:id', [check('id').custom(noUser), fieldValidation], userPut);
+userRt.delete(
+  '/:id',
+  [check('id').custom(noUser), fieldValidation],
+  userDelete,
+);

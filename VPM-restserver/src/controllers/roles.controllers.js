@@ -8,7 +8,7 @@ export const rolesGet = async (req = request, res = response) => {
       role,
     });
   } else {
-    res.status(400).json({
+    res.status(200).json({
       msg: 'no data in DB',
     });
   }
@@ -23,38 +23,20 @@ export const rolePut = async (req = request, res = response) => {
   const { id } = req.params;
   const { role } = req.body;
   const upRole = await Role.findByPk(id);
-  if (upRole) {
-    if (role) {
-      await upRole.update({ role });
-      res.status(200).json({
-        msg: 'updated role',
-      });
-    } else {
-      res.status(400).json({
-        msg: 'role is required',
-      });
-    }
-  } else {
-    res.status(400).json({
-      msg: 'role not found in DB',
-    });
-  }
+  await upRole.update({ role });
+  res.status(200).json({
+    msg: 'updated role',
+  });
 };
 
 export const roleDelete = async (req = request, res = response) => {
   const { id } = req.params;
-  const deleteRole = await Role.destroy({
+  await Role.destroy({
     where: {
       id: id,
     },
   });
-  if (deleteRole) {
-    res.status(200).json({
-      msg: 'deleted role',
-    });
-  } else {
-    res.status(400).json({
-      msg: 'role not found in DB',
-    });
-  }
+  res.status(200).json({
+    msg: 'deleted role',
+  });
 };

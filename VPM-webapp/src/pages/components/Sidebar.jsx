@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { Link, useNavigate } from 'react-router-dom';
 import { logout } from '../../store/auth/authSlice';
+import { AddModal } from './AddModal';
 
 export const Sidebar = () => {
   const { user_name } = useSelector((state) => state.auth);
@@ -54,6 +55,7 @@ export const Sidebar = () => {
             Projects
           </Link>
         </Button>
+        <AddModal />
       </Drawer>
     </Box>
   );
