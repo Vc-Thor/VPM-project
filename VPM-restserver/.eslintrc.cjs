@@ -13,5 +13,6 @@ module.exports = {
     'object-shorthand': 'off',
     camelcase: 'off',
     'lines-between-class-members': 'off',
+    'no-prototype-builtins': 'off',
   },
 };

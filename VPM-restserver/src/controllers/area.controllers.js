@@ -8,7 +8,7 @@ export const areaGet = async (req = request, res = response) => {
       area,
     });
   } else {
-    res.status(404).json({
+    res.status(200).json({
       msg: 'no data in DB',
     });
   }
