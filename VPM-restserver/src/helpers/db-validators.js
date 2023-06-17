@@ -5,7 +5,8 @@ import { Project } from '../models/project.models.js';
 import { Role } from '../models/roles.models.js';
 import { SubArea } from '../models/subArea.models.js';
 import { User } from '../models/user.models.js';
-import { Vector } from '../models/verctor.models.js';
+import { ValueVector } from '../models/valueVector.models.js';
+import { Vector } from '../models/vector.models.js';
 
 export const validatorEmail = async (email = '') => {
   const thereEmail = await User.findOne({ where: { email: email } });
@@ -119,5 +120,11 @@ export const noVector = async (id = '') => {
   const findVector = await Vector.findOne({ where: { id: id } });
   if (!findVector) {
     throw new Error('this vector does not exists');
+  }
+};
+export const noValue = async (id = '') => {
+  const findValue = await ValueVector.findByPk(id);
+  if (!findValue) {
+    throw new Error('this value does not exists');
   }
 };

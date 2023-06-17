@@ -4,9 +4,7 @@ import { Activity } from '../models/activity.models.js';
 export const activityGet = async (req = request, res = response) => {
   const activitys = await Activity.findAll();
   if (activitys.length !== 0) {
-    res.status(200).json({
-      activitys,
-    });
+    res.status(200).json(activitys);
   } else {
     res.status(404).json({
       msg: 'no data in DB',

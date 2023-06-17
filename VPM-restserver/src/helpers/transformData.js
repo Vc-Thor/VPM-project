@@ -18,3 +18,24 @@ export const transformedDatas = (datas = [], dataObject = {}) => {
   }
   return { transformedDataArray, transformedData };
 };
+export const valueForm = (valueArray = []) => {
+  const newValueForm = valueArray.map((value) => ({
+    id: value.id,
+    position: value.position,
+    value: value.value,
+    user_name: value['user.user_name'],
+    vector: {
+      vector_name: value['vector.vector'],
+      availability: value['vector.availability'],
+      power_input: value['vector.power_input'],
+      air_velocity: value['vector.air_velocity'],
+      area_m2: value['vector.area_m2'],
+      fix_q: value['vector.fix_q'],
+      area: value['vector.area.area'],
+      sub_area: value['vector.subarea.sub_area'],
+      activity: value['vector.activiry.activity'],
+      criteria: value['vector.criterion.criteria'],
+    },
+  }));
+  return { newValueForm };
+};

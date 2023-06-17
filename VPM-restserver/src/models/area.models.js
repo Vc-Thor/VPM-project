@@ -1,6 +1,6 @@
 import { DataTypes } from 'sequelize';
 import db from '../database/config.db.js';
-import { Vector } from './verctor.models.js';
+import { Vector } from './vector.models.js';
 
 export const Area = db.define(
   'area',

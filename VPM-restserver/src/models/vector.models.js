@@ -1,5 +1,6 @@
 import { DataTypes } from 'sequelize';
 import db from '../database/config.db.js';
+import { ValueVector } from './valueVector.models.js';
 
 export const Vector = db.define(
   'vector',
@@ -27,3 +28,11 @@ export const Vector = db.define(
     timestamps: false,
   },
 );
+Vector.hasMany(ValueVector, {
+  foreignKey: 'vector_id',
+  sourceKey: 'id',
+});
+ValueVector.belongsTo(Vector, {
+  foreignKey: 'vector_id',
+  targetKey: 'id',
+});

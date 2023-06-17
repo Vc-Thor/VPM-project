@@ -1,5 +1,5 @@
 import { response, request } from 'express';
-import { Vector } from '../models/verctor.models.js';
+import { Vector } from '../models/vector.models.js';
 import { User } from '../models/user.models.js';
 import { Area } from '../models/area.models.js';
 import { SubArea } from '../models/subArea.models.js';

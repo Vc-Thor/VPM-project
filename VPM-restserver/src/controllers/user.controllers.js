@@ -2,14 +2,18 @@ import bcryptjs from 'bcryptjs';
 import { response, request } from 'express';
 import { User } from '../models/user.models.js';
 import { Role } from '../models/roles.models.js';
+import { transformedDatas } from '../helpers/transformData.js';
 
 export const userGet = async (req = request, res = response) => {
   const user = await User.findAll({
     where: { state: true },
-    include: [{ model: Role }],
+    include: [{ model: Role, attributes: ['role'] }],
+    attributes: { exclude: ['role_id', 'pass'] },
+    raw: true,
   });
+  const { transformedDataArray } = transformedDatas(user);
   if (user.length !== 0) {
-    res.status(200).json({ user });
+    res.status(200).json(transformedDataArray);
   } else {
     res.status(200).json({
       msg: 'no data in DB',
@@ -18,10 +22,13 @@ export const userGet = async (req = request, res = response) => {
 };
 export const userGetAll = async (req = request, res = response) => {
   const user = await User.findAll({
-    include: [{ model: Role }],
+    include: [{ model: Role, attributes: ['role'] }],
+    attributes: { exclude: ['role_id', 'pass'] },
+    raw: true,
   });
+  const { transformedDataArray } = transformedDatas(user);
   if (user.length !== 0) {
-    res.status(200).json({ user });
+    res.status(200).json(transformedDataArray);
   } else {
     res.status(200).json({
       msg: 'no data in DB',
@@ -30,11 +37,14 @@ export const userGetAll = async (req = request, res = response) => {
 };
 export const userGetById = async (req = request, res = response) => {
   const { id } = req.params;
-  const user = await User.findByPk(id, { include: [{ model: Role }] });
+  const user = await User.findByPk(id, {
+    include: [{ model: Role, attributes: ['role'] }],
+    attributes: { exclude: ['role_id', 'pass'] },
+    raw: true,
+  });
+  const { transformedData } = transformedDatas([], user);
   if (user) {
-    res.status(200).json({
-      user,
-    });
+    res.status(200).json(transformedData);
   } else {
     res.status(200).json({
       msg: 'user not found in DB',

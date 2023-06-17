@@ -26,9 +26,7 @@ export const projectGet = async (req = request, res = response) => {
     },
   });
   if (project.length !== 0) {
-    res.status(200).json({
-      project,
-    });
+    res.status(200).json(project);
   } else {
     res.status(404).json({
       msg: 'no data in DB',

@@ -4,9 +4,7 @@ import { Role } from '../models/roles.models.js';
 export const rolesGet = async (req = request, res = response) => {
   const role = await Role.findAll();
   if (role.length !== 0) {
-    res.status(200).json({
-      role,
-    });
+    res.status(200).json(role);
   } else {
     res.status(200).json({
       msg: 'no data in DB',

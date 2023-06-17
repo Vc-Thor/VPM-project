@@ -4,9 +4,7 @@ import { SubArea } from '../models/subArea.models.js';
 export const subAreaGet = async (req = request, res = response) => {
   const subarea = await SubArea.findAll();
   if (subarea.length !== 0) {
-    res.status(200).json({
-      subarea,
-    });
+    res.status(200).json(subarea);
   } else {
     res.status(404).json({
       msg: 'no data in DB',

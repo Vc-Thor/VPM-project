@@ -4,9 +4,7 @@ import { Criteria } from '../models/criteria.models.js';
 export const criteriaGet = async (req = request, res = response) => {
   const criteria = await Criteria.findAll();
   if (criteria.length !== 0) {
-    res.status(200).json({
-      criteria,
-    });
+    res.status(200).json(criteria);
   } else {
     res.status(404).json({
       msg: 'no data in DB',

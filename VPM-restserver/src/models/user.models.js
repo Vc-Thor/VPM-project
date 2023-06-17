@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize';
 import db from '../database/config.db.js';
 import { Project } from './project.models.js';
-import { Vector } from './verctor.models.js';
+import { Vector } from './vector.models.js';
 import { Scenario } from './scenario.models.js';
 import { ValueVector } from './valueVector.models.js';
 

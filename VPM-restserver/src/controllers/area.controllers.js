@@ -4,9 +4,7 @@ import { Area } from '../models/area.models.js';
 export const areaGet = async (req = request, res = response) => {
   const area = await Area.findAll();
   if (area.length !== 0) {
-    res.status(200).json({
-      area,
-    });
+    res.status(200).json(area);
   } else {
     res.status(200).json({
       msg: 'no data in DB',
