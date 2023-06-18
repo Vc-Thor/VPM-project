@@ -10,7 +10,7 @@ export const checkingAuthentication = () => {
 export const startLogin = (user) => {
   return async (dispatch) => {
     dispatch(checkinCredentials());
-    const { ok, uid, token, errorMessage } = await loginUser(user);
+    const { ok, uid, token, errorMessage, exp } = await loginUser(user);
     if (!ok) return dispatch(logout({ errorMessage }));
     const { user_name, fname, lname, email, state, role_name } =
       await getUserByID(uid);
@@ -24,6 +24,7 @@ export const startLogin = (user) => {
         email,
         state,
         role_name,
+        exp,
       })
     );
   };

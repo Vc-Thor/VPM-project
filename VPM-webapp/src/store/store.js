@@ -7,11 +7,13 @@ const persisConfig = {
   key: 'root',
   version: 1,
   storage,
+  whitelist: ['auth'],
 };
 const reducer = combineReducers({
   auth: authSlice.reducer,
 });
 const persitedReducer = persistReducer(persisConfig, reducer);
+
 export const store = configureStore({
   reducer: persitedReducer,
 });

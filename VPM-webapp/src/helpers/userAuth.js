@@ -6,11 +6,12 @@ export const loginUser = async (user = null) => {
   try {
     const { data } = await axiosAuth.post('/login', user);
     const { token } = await data;
-    const { uid } = JWT(token);
+    const { uid, exp } = JWT(token);
     return {
       ok: true,
       uid,
       token,
+      exp,
     };
   } catch (err) {
     const { response } = err;

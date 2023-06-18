@@ -19,6 +19,7 @@ export const Sidebar = () => {
   const nav = useNavigate();
 
   const onClickLogout = () => {
+    localStorage.clear();
     dispatch(logout());
     nav('/login');
   };

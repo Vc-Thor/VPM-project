@@ -4,7 +4,7 @@ export const getUserByID = async (uid = null) => {
   if (!uid) return;
   try {
     const { data } = await axiosUser.get(`/${uid}`);
-    const { email, fname, lname, role, user_name, state } = data.user;
+    const { email, fname, lname, role, user_name, state } = await data;
     const { role: role_name } = role;
     return { ok: true, user_name, fname, lname, email, state, role_name };
   } catch (err) {
