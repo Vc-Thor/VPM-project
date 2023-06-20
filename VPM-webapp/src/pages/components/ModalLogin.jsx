@@ -6,7 +6,7 @@ import { useForm } from '../../hooks/useForm';
 import { Counter } from './Counter';
 import { useDispatch, useSelector } from 'react-redux';
 import { startLogin } from '../../store/auth/thunks';
-import { useMemo } from 'react';
+import { useCallback } from 'react';
 const style = {
   position: 'absolute',
   top: '50%',
@@ -25,7 +25,7 @@ const formData = {
 export const ModalLogin = () => {
   const { errorMessage, email: userEmail } = useSelector((state) => state.auth);
   const { pass, passValid, onInputChange, formState } = useForm(formData);
-  const isChecking = useMemo(() => status === 'checking', [status]);
+  const isChecking = useCallback(() => status === 'checking', [status]);
   const dispatch = useDispatch();
   const onSubmit = async (e) => {
     e.preventDefault();

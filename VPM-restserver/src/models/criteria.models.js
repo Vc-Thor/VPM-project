@@ -10,7 +10,7 @@ export const Criteria = db.define(
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
-    criteria: { type: DataTypes.STRING },
+    name: { type: DataTypes.STRING },
   },
   { tableName: 'Criteria', timestamps: false },
 );

@@ -10,7 +10,7 @@ export const Area = db.define(
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
-    area: { type: DataTypes.STRING },
+    name: { type: DataTypes.STRING },
   },
   {
     tableName: 'Area',

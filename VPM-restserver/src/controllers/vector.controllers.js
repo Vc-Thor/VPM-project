@@ -11,10 +11,10 @@ export const vectorGet = async (req = request, res = response) => {
   const vectors = await Vector.findAll({
     include: [
       { model: User, attributes: ['user_name'] },
-      { model: Area, attributes: ['area'] },
-      { model: SubArea, attributes: ['sub_area'] },
-      { model: Activity, attributes: ['activity'] },
-      { model: Criteria, attributes: ['criteria'] },
+      { model: Area, attributes: ['name'] },
+      { model: SubArea, attributes: ['name'] },
+      { model: Activity, attributes: ['name'] },
+      { model: Criteria, attributes: ['name'] },
     ],
     attributes: {
       exclude: [
@@ -41,10 +41,10 @@ export const vectorGetById = async (req = request, res = response) => {
   const vector = await Vector.findByPk(id, {
     include: [
       { model: User, attributes: ['user_name'] },
-      { model: Area, attributes: ['area'] },
-      { model: SubArea, attributes: ['sub_area'] },
-      { model: Activity, attributes: ['activity'] },
-      { model: Criteria, attributes: ['criteria'] },
+      { model: Area, attributes: ['name'] },
+      { model: SubArea, attributes: ['name'] },
+      { model: Activity, attributes: ['name'] },
+      { model: Criteria, attributes: ['name'] },
     ],
     attributes: {
       exclude: [

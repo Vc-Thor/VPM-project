@@ -9,3 +9,15 @@ export const axiosAuth = axios.create({
 export const axiosUser = axios.create({
   baseURL: `http://${devConnection || prodConnection}/api/user/`,
 });
+export const axiosCriteria = axios.create({
+  baseURL: `http://${devConnection || prodConnection}/api/criteria`,
+});
+export const axiosArea = axios.create({
+  baseURL: `http://${devConnection || prodConnection}/api/area`,
+});
+export const axiosActivity = axios.create({
+  baseURL: `http://${devConnection || prodConnection}/api/activity`,
+});
+export const axiosSubArea = axios.create({
+  baseURL: `http://${devConnection || prodConnection}/api/subarea`,
+});

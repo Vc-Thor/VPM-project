@@ -2,11 +2,18 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Grid } from '@mui/material';
 import { SelectOption } from './SelectOption';
 import { useForm } from '../../hooks/useForm';
 import { TextFieldCustom } from './TexfieldCustom';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  startGetCriterias,
+  startGetAreas,
+  startGetActivitys,
+  startGetSubareas,
+} from '../../store';
 const style = {
   position: 'absolute',
   top: '50%',
@@ -21,7 +28,7 @@ const style = {
 };
 const formData = {
   vector: '',
-  availability: 0,
+  availability: 100,
   power_input: 0,
   air_velocity: 0,
   area_m2: 0,
@@ -33,6 +40,7 @@ const formData = {
   criteria: '',
 };
 export const AddModal = () => {
+  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -50,24 +58,35 @@ export const AddModal = () => {
     onInputChange,
     formState,
   } = useForm(formData);
+
+  const { criterias } = useSelector((state) => state.criteria);
+  const { areas } = useSelector((state) => state.area);
+  const { subareas } = useSelector((state) => state.subarea);
+  const { activitys } = useSelector((state) => state.activity);
   console.log(formState);
+  useEffect(() => {
+    dispatch(startGetCriterias());
+    dispatch(startGetAreas());
+    dispatch(startGetActivitys());
+    dispatch(startGetSubareas());
+  }, []);
+
   return (
     <>
       <Button sx={{ color: 'white' }} onClick={handleOpen}>
         Equip Vector
       </Button>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby='modal-modal-title'
-        aria-describedby='modal-modal-description'
-      >
+      <Modal open={open} onClose={handleClose}>
         <Box sx={style}>
           <Typography sx={{ mb: 4, textAlign: 'center' }} variant='h5'>
             Equip Vector
           </Typography>
-          <Grid container spacing={2}>
-            <Grid item xs={3.2}>
+          <Grid
+            container
+            spacing={2}
+            sx={{ display: 'flex', justifyContent: 'center' }}
+          >
+            <Grid item>
               <TextFieldCustom
                 size={260}
                 title={'Vector Name'}
@@ -77,38 +96,41 @@ export const AddModal = () => {
                 onInputChange={onInputChange}
               />
             </Grid>
-            <Grid item xs={2}>
+            <Grid item>
               <SelectOption
                 value={area}
                 onInputChange={onInputChange}
                 title={'Area'}
                 name={'area'}
                 size={160}
+                data={areas}
               />
             </Grid>
-            <Grid item xs={2}>
+            <Grid item>
               <SelectOption
                 value={sub_area}
                 onInputChange={onInputChange}
                 title={'Sub Area'}
                 name={'sub_area'}
                 size={160}
+                data={subareas}
               />
             </Grid>
-            <Grid item xs={2.2}>
+            <Grid item>
               <SelectOption
                 value={activity}
                 onInputChange={onInputChange}
                 title={'Activity'}
                 name={'activity'}
                 size={175}
+                data={activitys}
               />
             </Grid>
-            <Grid item xs={2.2}>
+            <Grid item>
               <TextFieldCustom
                 name={'availability'}
                 size={100}
-                dfValue={100 || availability}
+                dfValue={availability}
                 type={'number'}
                 title={'Availability'}
                 symbol={'%'}
@@ -117,16 +139,17 @@ export const AddModal = () => {
                 onInputChange={onInputChange}
               />
             </Grid>
-            <Grid item xs={2.3}>
+            <Grid item>
               <SelectOption
                 value={criteria}
                 onInputChange={onInputChange}
                 title={'Criteria'}
                 name={'criteria'}
                 size={180}
+                data={criterias}
               />
             </Grid>
-            <Grid item xs={1.85}>
+            <Grid item>
               <TextFieldCustom
                 name={'power_input'}
                 size={145}
@@ -138,7 +161,7 @@ export const AddModal = () => {
                 onInputChange={onInputChange}
               />
             </Grid>
-            <Grid item xs={1.85}>
+            <Grid item>
               <TextFieldCustom
                 name={'air_velocity'}
                 size={145}
@@ -150,18 +173,18 @@ export const AddModal = () => {
                 onInputChange={onInputChange}
               />
             </Grid>
-            <Grid item xs={1.8}>
+            <Grid item>
               <TextFieldCustom
                 name={'area_m2'}
                 size={140}
-                title={'Air m2'}
+                title={'Area m2'}
                 type={'number'}
                 min={0}
                 value={area_m2}
                 onInputChange={onInputChange}
               />
             </Grid>
-            <Grid item xs={1}>
+            <Grid item>
               <TextFieldCustom
                 name={'fix_q'}
                 size={140}

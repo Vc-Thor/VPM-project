@@ -10,7 +10,7 @@ export const SubArea = db.define(
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
-    sub_area: { type: DataTypes.STRING },
+    name: { type: DataTypes.STRING },
   },
   {
     tableName: 'Subarea',

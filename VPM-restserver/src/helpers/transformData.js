@@ -31,10 +31,10 @@ export const valueForm = (valueArray = []) => {
       air_velocity: value['vector.air_velocity'],
       area_m2: value['vector.area_m2'],
       fix_q: value['vector.fix_q'],
-      area: value['vector.area.area'],
-      sub_area: value['vector.subarea.sub_area'],
-      activity: value['vector.activiry.activity'],
-      criteria: value['vector.criterion.criteria'],
+      area: value['vector.area.name'],
+      sub_area: value['vector.subarea.name'],
+      activity: value['vector.activiry.name'],
+      criteria: value['vector.criterion.name'],
     },
   }));
   return { newValueForm };

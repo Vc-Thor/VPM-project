@@ -10,7 +10,7 @@ export const Activity = db.define(
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
-    activity: { type: DataTypes.STRING },
+    name: { type: DataTypes.STRING },
   },
   {
     tableName: 'Activity',
