@@ -15,6 +15,7 @@ export const ValueVector = db.define(
     },
     position: { type: DataTypes.INTEGER },
     value: { type: DataTypes.INTEGER },
+    period: { type: DataTypes.INTEGER },
   },
   {
     tableName: 'Valuevector',

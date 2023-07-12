@@ -20,7 +20,15 @@ vectorRt.get(
 );
 vectorRt.post(
   '/newVector',
-  [check('vector').custom(validatorVector), fieldValidation],
+  [
+    check('vector', 'vector is requerid').not().isEmpty(),
+    check('area_id', 'area is requerid').not().isEmpty(),
+    check('sub_area_id', 'sub_area is requerid').not().isEmpty(),
+    check('activity_id', 'activity is requerid').not().isEmpty(),
+    check('criteria_id', 'criteria is requerid').not().isEmpty(),
+    check('vector').custom(validatorVector),
+    fieldValidation,
+  ],
   vectorPost,
 );
 vectorRt.put(

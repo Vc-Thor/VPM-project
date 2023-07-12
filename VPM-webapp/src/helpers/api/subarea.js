@@ -9,6 +9,10 @@ export const getSubAreas = async () => {
     };
   } catch (err) {
     const { msg: errorMessage } = err.response.data;
-    console.log(errorMessage);
+    console.log(err);
+    return {
+      ok: false,
+      errorMessage,
+    };
   }
 };

@@ -1,4 +1,4 @@
-import { getCriterias } from '../../helpers/criteria';
+import { getCriterias } from '../../helpers/api/criteria';
 import {
   getCriteriasFailure,
   getCriteriasStart,

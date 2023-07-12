@@ -5,7 +5,8 @@ import { Area } from '../models/area.models.js';
 import { SubArea } from '../models/subArea.models.js';
 import { Activity } from '../models/activity.models.js';
 import { Criteria } from '../models/criteria.models.js';
-import { transformedDatas } from '../helpers/transformData.js';
+import { vectorForm } from '../helpers/transformData.js';
+import { ValueVector } from '../models/valueVector.models.js';
 
 export const vectorGet = async (req = request, res = response) => {
   const vectors = await Vector.findAll({
@@ -15,6 +16,10 @@ export const vectorGet = async (req = request, res = response) => {
       { model: SubArea, attributes: ['name'] },
       { model: Activity, attributes: ['name'] },
       { model: Criteria, attributes: ['name'] },
+      {
+        model: ValueVector,
+        attributes: ['id', 'position', 'value', 'period'],
+      },
     ],
     attributes: {
       exclude: [
@@ -25,11 +30,10 @@ export const vectorGet = async (req = request, res = response) => {
         'criteria_id',
       ],
     },
-    raw: true,
   });
   if (vectors.length !== 0) {
-    const { transformedDataArray } = transformedDatas(vectors);
-    res.status(200).json(transformedDataArray);
+    const { newVectorFormArray } = vectorForm(vectors, {});
+    res.status(200).json(newVectorFormArray);
   } else {
     res.status(200).json({
       msg: 'no data in DB',
@@ -45,6 +49,10 @@ export const vectorGetById = async (req = request, res = response) => {
       { model: SubArea, attributes: ['name'] },
       { model: Activity, attributes: ['name'] },
       { model: Criteria, attributes: ['name'] },
+      {
+        model: ValueVector,
+        attributes: ['id', 'position', 'value'],
+      },
     ],
     attributes: {
       exclude: [
@@ -55,11 +63,10 @@ export const vectorGetById = async (req = request, res = response) => {
         'criteria_id',
       ],
     },
-    raw: true,
   });
-  const { transformedData } = transformedDatas([], vector);
+  const { newVectorFormObj } = vectorForm([], vector);
   if (vector.length !== 0) {
-    res.status(200).json(transformedData);
+    res.status(200).json(newVectorFormObj);
   } else {
     res.status(200).json({
       msg: 'no data in DB',
@@ -99,6 +106,7 @@ export const vectorPost = async (req = request, res = response) => {
   await addVector.save();
   res.status(201).json({
     msg: 'vector created correctly',
+    id: addVector.id,
   });
 };
 export const vectorPut = async (req = request, res = response) => {

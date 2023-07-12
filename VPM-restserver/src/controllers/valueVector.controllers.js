@@ -24,7 +24,6 @@ export const valuesGet = async (req = request, res = response) => {
             'sub_area_id',
             'activity_id',
             'criteria_id',
-            'id',
           ],
           include: [
             'availability',
@@ -45,7 +44,7 @@ export const valuesGet = async (req = request, res = response) => {
       },
     ],
     attributes: {
-      exclude: ['user_id', 'vector_id'],
+      exclude: ['user_id'],
     },
     raw: true,
   });
@@ -107,12 +106,13 @@ export const valuesByVectorGet = async (req = request, res = response) => {
   }
 };
 export const valuesPost = async (req = request, res = response) => {
-  const { user_id, vector_id, position, value } = req.body;
+  const { user_id, vector_id, position, value, period } = req.body;
   const newValue = {
     user_id: user_id,
     vector_id: vector_id,
     position: position,
     value: value,
+    period: period,
   };
   const addValue = ValueVector.build(newValue);
   await addValue.save();

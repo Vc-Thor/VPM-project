@@ -1,4 +1,4 @@
-import { getSubAreas } from '../../helpers/subarea';
+import { getSubAreas } from '../../helpers/api/subarea';
 import {
   getSubareasFailure,
   getSubareasStart,

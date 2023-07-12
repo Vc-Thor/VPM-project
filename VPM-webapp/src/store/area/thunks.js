@@ -1,4 +1,4 @@
-import { getAreas } from '../../helpers/area';
+import { getAreas } from '../../helpers/api/area';
 import { getAreasFailure, getAreasStart, getAreasSuccess } from './areaSlice';
 export const checkingArea = () => {
   return async (dispatch) => {

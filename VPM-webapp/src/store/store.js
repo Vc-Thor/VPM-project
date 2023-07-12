@@ -7,6 +7,7 @@ import {
   areaSlice,
   activitySlice,
   subareaSlice,
+  vectorSlice,
 } from './';
 
 const persisConfig = {
@@ -21,7 +22,7 @@ const reducer = combineReducers({
   area: areaSlice.reducer,
   subarea: subareaSlice.reducer,
   activity: activitySlice.reducer,
-  vector: areaSlice.reducer,
+  vector: vectorSlice.reducer,
 });
 const persitedReducer = persistReducer(persisConfig, reducer);
 

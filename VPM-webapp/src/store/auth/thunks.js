@@ -1,5 +1,5 @@
-import { getUserByID } from '../../helpers/user';
-import { loginUser } from '../../helpers/userAuth';
+import { loginUser } from '../../helpers/api/userAuth';
+import { getUserByID } from '../../helpers/api/user';
 import { checkinCredentials, login, logout } from './authSlice';
 
 export const checkingAuthentication = () => {

@@ -21,3 +21,9 @@ export const axiosActivity = axios.create({
 export const axiosSubArea = axios.create({
   baseURL: `http://${devConnection || prodConnection}/api/subarea`,
 });
+export const axiosVector = axios.create({
+  baseURL: `http://${devConnection || prodConnection}/api/vector`,
+});
+export const axiosValuesEquip = axios.create({
+  baseURL: `http://${devConnection || prodConnection}/api/values`,
+});

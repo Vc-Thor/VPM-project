@@ -1,4 +1,4 @@
-import { getActivitys } from '../../helpers/activity';
+import { getActivitys } from '../../helpers/api/activity';
 import {
   getActivityFailure,
   getActivityStart,

@@ -25,6 +25,7 @@ export const valueForm = (valueArray = []) => {
     value: value.value,
     user_name: value['user.user_name'],
     vector: {
+      id: value['vector.id'],
       vector_name: value['vector.vector'],
       availability: value['vector.availability'],
       power_input: value['vector.power_input'],
@@ -38,4 +39,45 @@ export const valueForm = (valueArray = []) => {
     },
   }));
   return { newValueForm };
+};
+export const vectorForm = (vectors = [], vector = {}) => {
+  const newVectorFormArray = vectors.map((v) => ({
+    id: v.id,
+    vector: v.vector,
+    availability: v.availability,
+    power_input: v.power_input,
+    air_velocity: v.air_velocity,
+    area_m2: v.area_m2,
+    fix_q: v.fix_q,
+    position: v.position,
+    user: v.user?.user_name,
+    area: v.area?.name,
+    sub_area: v.subarea?.name,
+    activity: v.activity?.name,
+    criteria: v.criterion?.name,
+    vectors: v.valuevectors,
+  }));
+  const newVectorFormObj = {
+    id: vector.id,
+    vector: vector.vector,
+    availability: vector.availability,
+    power_input: vector.power_input,
+    air_velocity: vector.air_velocity,
+    area_m2: vector.area_m2,
+    fix_q: vector.fix_q,
+    position: vector.position,
+    user: vector.user?.user_name,
+    area: vector.area?.name,
+    sub_area: vector.subarea?.name,
+    activity: vector.activity?.name,
+    criteria: vector.criterion?.name,
+    values: vector.valuevectors?.map((valueVector) => ({
+      id: valueVector.id,
+      position: valueVector.position,
+      value: valueVector.value,
+      period: valueVector.period,
+    })),
+  };
+
+  return { newVectorFormArray, newVectorFormObj };
 };
