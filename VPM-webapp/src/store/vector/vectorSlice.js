@@ -113,6 +113,22 @@ export const vectorSlice = createSlice({
       state.uid = null;
       state.ok = false;
     },
+    putVectorStart: (state) => {
+      state.loading = 'checking';
+      state.message = null;
+      state.errorMessage = null;
+    },
+    putVectorSucces: (state, { payload }) => {
+      state.loading = 'succes';
+      state.message = payload.message;
+      state.errorMessage = null;
+      state.vectors = payload.data;
+    },
+    putVectorFailure: (state, { payload }) => {
+      state.loading = 'not-loaded';
+      state.message = null;
+      state.errorMessage = payload.errorMessage;
+    },
   },
 });
 
@@ -124,4 +140,7 @@ export const {
   postVectorStart,
   postVectorSucces,
   postVectorFailure,
+  putVectorStart,
+  putVectorSucces,
+  putVectorFailure,
 } = vectorSlice.actions;

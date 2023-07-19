@@ -9,7 +9,6 @@ export const generateJWT = (uid = '') => {
       { expiresIn: '5d' },
       (err, token) => {
         if (err) {
-          console.log(err);
           reject(new Error('token could not be generated'));
         } else {
           resolve(token);

@@ -35,48 +35,50 @@ export const Home = () => {
   }, []);
 
   return (
-    <Grid container sx={{ display: 'flex', justifyContent: 'center' }}>
-      <Snackbar
-        open={showSnackbar}
-        onClose={() => setShowSnackbar(false)}
-        autoHideDuration={3000}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      >
-        {ok === true ? (
-          <Alert onClose={() => setShowSnackbar(false)} severity='success'>
-            {message}
-          </Alert>
-        ) : (
-          <Alert onClose={() => setShowSnackbar(false)} severity='error'>
-            {errorMessage}
-          </Alert>
-        )}
-      </Snackbar>
-      <Grid item>
-        <Typography variant='h4'>Ventilation Project Manager</Typography>
-      </Grid>
-      <Grid container sx={{ display: 'flex', justifyContent: 'end' }}>
-        <Grid
-          item
-          sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            border: 'solid #1976d2 1px',
-            borderRadius: '5px',
-          }}
-        >
-          <Button variant='contained'>
-            <ArrowBackIcon />
-          </Button>
-          <Typography sx={{ p: 1 }}>Global</Typography>
-          <Button variant='contained'>
-            <ArrowForwardIcon />
-          </Button>
-        </Grid>
-      </Grid>
-      <Grid item>
-        <DragTableGlobal />
-      </Grid>
-    </Grid>
+    // <Grid container sx={{ display: 'flex', justifyContent: 'center' }}>
+    //   <Snackbar
+    //     open={showSnackbar}
+    //     onClose={() => setShowSnackbar(false)}
+    //     autoHideDuration={3000}
+    //     anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+    //   >
+    //     {ok === true ? (
+    //       <Alert onClose={() => setShowSnackbar(false)} severity='success'>
+    //         {message}
+    //       </Alert>
+    //     ) : (
+    //       <Alert onClose={() => setShowSnackbar(false)} severity='error'>
+    //         {errorMessage}
+    //       </Alert>
+    //     )}
+    //   </Snackbar>
+    //   <Grid item sx={{ mt: 3 }}>
+    //     <Typography variant='h4'>Ventilation Project Manager</Typography>
+    //   </Grid>
+    //   <Grid container sx={{ display: 'flex', justifyContent: 'end' }}>
+    //     <Grid
+    //       item
+    //       sx={{
+    //         display: 'flex',
+    //         flexDirection: 'row',
+    //         border: 'solid #1976d2 1px',
+    //         borderRadius: '5px',
+    //       }}
+    //     >
+    //       <Button variant='contained'>
+    //         <ArrowBackIcon />
+    //       </Button>
+    //       <Typography sx={{ p: 1 }}>Global</Typography>
+    //       <Button variant='contained'>
+    //         <ArrowForwardIcon />
+    //       </Button>
+    //     </Grid>
+    //   </Grid>
+    //   <Grid item>
+    <div>
+      <DragTableGlobal />
+    </div>
+    //   </Grid>
+    // </Grid>
   );
 };

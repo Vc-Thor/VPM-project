@@ -27,7 +27,6 @@ export const login = async (req = request, res = response) => {
     const token = await generateJWT(user.id);
     res.json({ token });
   } catch (e) {
-    console.log(e);
     res.status(500).json({
       msg: 'talk to the administrator',
     });

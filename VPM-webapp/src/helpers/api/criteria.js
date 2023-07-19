@@ -9,7 +9,6 @@ export const getCriterias = async () => {
     };
   } catch (err) {
     const { msg: errorMessage } = err.response.data;
-    console.log(err);
     return {
       ok: false,
       errorMessage,

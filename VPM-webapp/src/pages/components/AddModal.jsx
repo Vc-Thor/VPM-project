@@ -88,6 +88,7 @@ export const AddModal = () => {
       fix_q: formState.fix_q,
     };
     dispatch(startPostVector(vector, userUID, newData));
+    setOpen(false);
   };
   return (
     <>

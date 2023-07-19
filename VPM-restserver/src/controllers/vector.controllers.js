@@ -119,6 +119,10 @@ export const vectorPut = async (req = request, res = response) => {
 export const vectorDelete = async (req = request, res = response) => {
   const uuid = req.params.id;
   const deleteVector = await Vector.findByPk(uuid);
-  await deleteVector.destroy({ where: { id: uuid } });
+  await deleteVector.destroy({
+    where: { id: uuid },
+    cascade: true,
+    include: [ValueVector],
+  });
   res.status(200).json({ msg: 'vector deleted' });
 };

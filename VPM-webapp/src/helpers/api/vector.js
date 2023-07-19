@@ -80,3 +80,21 @@ export const postVector = async (vector = {}) => {
     };
   }
 };
+export const putEquipVector = async (id = null, datas = null) => {
+  if (!id && !datas) return;
+  try {
+    const { data } = await axiosVector.put(`/${id}`, datas);
+    const { msg } = data;
+    return {
+      ok: true,
+      msg,
+    };
+  } catch (err) {
+    const { errors } = err.response.data;
+    const errorMessage = errors.map((e) => e.msg)[0];
+    return {
+      ok: false,
+      errorMessage,
+    };
+  }
+};

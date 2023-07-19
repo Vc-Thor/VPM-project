@@ -19,7 +19,6 @@ export const RoutesVPM = () => {
       const timeRemaining = exp - currentTime;
 
       if (timeRemaining < 300) {
-        console.log('El token está a punto de expirar');
         setShowModal(true);
       }
       const timeout = setTimeout(() => {
