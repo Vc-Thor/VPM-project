@@ -13,14 +13,14 @@
 //   newPositionForVector,
 //   resultValueVectors,
 // } from '../../helpers/data/calculations';
-import { result, transformData } from '../../helpers/data/data';
+import { result, transformData } from '../../helpers/datas/data';
 // import { startGetVectors } from '../../store';
 // import DeleteIcon from '@mui/icons-material/Delete';
 import Draggable from 'react-draggable';
 
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { resultValueVectors } from '../../helpers/data/calculations';
+import { resultValueVectors } from '../../helpers/datas/calculations';
 import {
   Grid,
   Table,

@@ -3,7 +3,7 @@ import {
   getVectors,
   postVector,
 } from '../../helpers/api/vector';
-import { createValue } from '../../helpers/data/data';
+import { createValue } from '../../helpers/datas/data';
 import {
   getVectorFailure,
   VectorStart,

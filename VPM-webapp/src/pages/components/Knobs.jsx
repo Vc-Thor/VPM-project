@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
-import { result } from '../../helpers/data/data';
+import { result } from '../../helpers/datas/data';
 export const Knobs = () => {
   const svgRef = useRef(null);
   const [data, setData] = useState(result);

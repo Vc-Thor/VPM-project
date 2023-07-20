@@ -10,7 +10,7 @@ import {
   calculateCriteria,
   result,
   transformData,
-} from '../../helpers/data/data';
+} from '../../helpers/datas/data';
 const style = {
   position: 'absolute',
   top: '50%',
