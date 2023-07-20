@@ -1,5 +1,6 @@
 import { putValueEquipVector } from '../api/valueEquipVector';
 import { putEquipVector } from '../api/vector';
+// ? por subir
 
 export const newPositionForVector = async (vectors = [], state = {}) => {
   const posVectors = vectors.filter((x) => x.id === state.vectorId);
