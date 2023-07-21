@@ -11,7 +11,9 @@ import {
   startGetSubareas,
   startGetVectors,
 } from '../store';
+import { DragTableArea } from './components/DragTableArea';
 export const Home = () => {
+  const [drag, setDrag] = useState(false);
   const [showSnackbar, setShowSnackbar] = useState(false);
   const { loading, errorMessage, message, ok } = useSelector(
     (state) => state.vector
@@ -65,18 +67,26 @@ export const Home = () => {
             borderRadius: '5px',
           }}
         >
-          <Button variant='contained'>
+          <Button variant='contained' onClick={() => setDrag(true)}>
             <ArrowBackIcon />
           </Button>
-          <Typography sx={{ p: 1 }}>Global</Typography>
-          <Button variant='contained'>
+          <Typography sx={{ p: 1 }}>
+            {drag === false ? 'Global' : 'Area'}
+          </Typography>
+          <Button variant='contained' onClick={() => setDrag(false)}>
             <ArrowForwardIcon />
           </Button>
         </Grid>
       </Grid>
-      <Grid item>
-        <DragTableGlobal />
-      </Grid>
+      {drag === false ? (
+        <Grid item>
+          <DragTableGlobal />
+        </Grid>
+      ) : (
+        <Grid item>
+          <DragTableArea />
+        </Grid>
+      )}
     </Grid>
   );
 };
