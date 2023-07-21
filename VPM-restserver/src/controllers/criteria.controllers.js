@@ -14,7 +14,7 @@ export const criteriaGet = async (req = request, res = response) => {
 export const criteriaPost = async (req = request, res = response) => {
   const { criteria } = req.body;
   const newCriteria = {
-    criteria: criteria,
+    name: criteria,
   };
   const addCriteria = Criteria.build(newCriteria);
   await addCriteria.save();

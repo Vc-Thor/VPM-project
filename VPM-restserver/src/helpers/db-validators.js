@@ -40,7 +40,7 @@ export const existsRole = async (role = '') => {
   }
 };
 export const validatorArea = async (area = '') => {
-  const existsArea = await Area.findOne({ where: { area: area } });
+  const existsArea = await Area.findOne({ where: { name: area } });
   if (existsArea) {
     throw new Error(`this area: '${area}' already exists`);
   }
@@ -53,7 +53,7 @@ export const noArea = async (id = '') => {
 };
 export const validatorSubArea = async (sub_area = '') => {
   const existsSubArea = await SubArea.findOne({
-    where: { sub_area: sub_area },
+    where: { name: sub_area },
   });
   if (existsSubArea) {
     throw new Error(`this sub area: '${sub_area}' already exists`);
@@ -67,7 +67,7 @@ export const noSubArea = async (id = '') => {
 };
 export const validatorActivity = async (activity = '') => {
   const existsActivity = await Activity.findOne({
-    where: { activity: activity },
+    where: { name: activity },
   });
   if (existsActivity) {
     throw new Error(`this activity: '${activity}' already exists`);
@@ -82,7 +82,7 @@ export const noActivity = async (id = '') => {
 
 export const validatorCriteria = async (criteria = '') => {
   const existsCriteria = await Criteria.findOne({
-    where: { criteria: criteria },
+    where: { name: criteria },
   });
   if (existsCriteria) {
     throw new Error(`this criteria: '${criteria}' already exists`);

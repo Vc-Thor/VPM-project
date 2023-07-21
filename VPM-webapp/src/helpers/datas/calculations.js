@@ -4,21 +4,23 @@ import { putEquipVector } from '../api/vector';
 
 export const newPositionForVector = async (vectors = [], state = {}) => {
   const posVectors = vectors.filter((x) => x.id === state.vectorId);
+  const currentPos = vectors.some((x) => x.position !== state.position.x);
+  if (currentPos === true) {
+    for (let i = 0; i < posVectors.length; i++) {
+      const vector = posVectors[i];
+      const { id } = vector;
+      const pos = { position: state.position.x };
+      for (let j = 0; j < vector.vectors.length; j++) {
+        const item = vector.vectors[j];
+        const { id, position } = item;
+        const pos = {
+          position: state.position.x + position,
+        };
+        await putValueEquipVector(id, pos);
+      }
 
-  for (let i = 0; i < posVectors.length; i++) {
-    const vector = posVectors[i];
-    const { id } = vector;
-    const pos = { position: state.position.x };
-    for (let j = 0; j < vector.vectors.length; j++) {
-      const item = vector.vectors[j];
-      const { id, position } = item;
-      const pos = {
-        position: state.position.x + position,
-      };
-      await putValueEquipVector(id, pos);
+      await putEquipVector(id, pos);
     }
-
-    await putEquipVector(id, pos);
   }
 };
 export const resultValueVectors = (newResult = [], vectors = []) => {

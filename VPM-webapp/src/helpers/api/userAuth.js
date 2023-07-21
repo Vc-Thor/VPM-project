@@ -3,6 +3,7 @@ import { axiosAuth } from './api';
 
 export const loginUser = async (user = null) => {
   if (!user) return;
+  console.log(user);
   try {
     const { data } = await axiosAuth.post('/login', user);
     const { token } = await data;
@@ -14,8 +15,9 @@ export const loginUser = async (user = null) => {
       exp,
     };
   } catch (err) {
-    const { response } = err;
-    const errorMessage = response.data?.msg || response.data.errors[0]?.msg;
+    const { response, message } = await err;
+    const errorMessage =
+      message || response.data?.msg || response.data.errors[0]?.msg;
     return { ok: false, errorMessage };
   }
 };

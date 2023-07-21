@@ -15,7 +15,7 @@ export const result = generateData(number);
 
 export const transformData = (result = []) => {
   const newData = result.map((item, index) => ({
-    position: index * 100,
+    position: ((index + 1) * 85.9).toFixed(1),
     value: item.y,
   }));
   return { newData };

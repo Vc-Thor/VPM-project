@@ -14,7 +14,7 @@ import { valueVectorRT } from '../routes/valueVector.routes.js';
 export class Server {
   constructor() {
     this.app = express();
-    this.port = 6000;
+    this.port = 80;
     this.paths = {
       roles: '/api/role',
       users: '/api/user',

@@ -14,7 +14,7 @@ export const areaGet = async (req = request, res = response) => {
 export const areaPost = async (req = request, res = response) => {
   const { area } = req.body;
   const newArea = {
-    area: area,
+    name: area,
   };
   const addArea = Area.build(newArea);
   await addArea.save();

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const prodConnection = '34.219.165.235:5000';
-const devConnection = 'localhost:5000';
+const prodConnection = '34.219.165.235:80';
+const devConnection = 'localhost:80';
 
 export const axiosAuth = axios.create({
   baseURL: `http://${devConnection || prodConnection}/api/auth/`,

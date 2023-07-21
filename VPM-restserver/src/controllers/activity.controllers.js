@@ -14,7 +14,7 @@ export const activityGet = async (req = request, res = response) => {
 export const activityPost = async (req = request, res = response) => {
   const { activity } = req.body;
   const newActivity = {
-    activity: activity,
+    name: activity,
   };
   const addActivity = Activity.build(newActivity);
   await addActivity.save();

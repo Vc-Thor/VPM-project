@@ -14,7 +14,7 @@ export const subAreaGet = async (req = request, res = response) => {
 export const subAreaPost = async (req = request, res = response) => {
   const { sub_area } = req.body;
   const newsubarea = {
-    sub_area: sub_area,
+    name: sub_area,
   };
   const addSubarea = SubArea.build(newsubarea);
   await addSubarea.save();
