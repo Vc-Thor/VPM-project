@@ -1,16 +1,25 @@
 import { useMemo, useState } from 'react';
-import { Modal, Box, Typography, Button, Grid, TextField } from '@mui/material';
+import {
+  Modal,
+  Box,
+  Typography,
+  Button,
+  Grid,
+  TextField,
+  IconButton,
+} from '@mui/material';
 import { SelectOption } from './SelectOption';
 import { useForm } from '../../hooks/useForm';
 import { TextFieldCustom } from './TexfieldCustom';
 import { useDispatch, useSelector } from 'react-redux';
-import { startPostVector } from '../../store';
+import { startPutVector } from '../../store';
 import { Knobs } from './Knobs';
+import EditIcon from '@mui/icons-material/Edit';
 import {
   calculateCriteria,
-  result,
   reverseTransformData,
   transformData,
+  transformGraphs,
 } from '../../helpers/datas/data';
 const style = {
   position: 'absolute',
@@ -24,20 +33,21 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
-const formData = {
-  vector: '',
-  availability: 100,
-  power_input: 0,
-  air_velocity: 0,
-  area_m2: 0,
-  fix_q: 0,
-  position: 0,
-  area: '',
-  sub_area: '',
-  activity: '',
-  criteria: '',
-};
-export const AddModal = () => {
+
+export const EditModal = ({ vector: editVector }) => {
+  const formData = {
+    vector: editVector.vector || '',
+    availability: editVector.availability || 100,
+    power_input: editVector.power_input || 0,
+    air_velocity: editVector.air_velocity || 0,
+    area_m2: editVector.area_m2 || 0,
+    fix_q: editVector.fix_q || 0,
+    position: editVector.position || 0,
+    area: editVector.area_id || '',
+    sub_area: editVector.sub_area_id || '',
+    activity: editVector.activity_id || '',
+    criteria: editVector.criteria_id || '',
+  };
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const {
@@ -77,7 +87,8 @@ export const AddModal = () => {
     return { disable };
   };
   const { disable } = disabled(criteria);
-  const { newResult } = calculateCriteria(result, disable, formState);
+  const transform = transformGraphs(editVector);
+  const { newResult } = calculateCriteria(transform, disable, formState);
   const transformedData = transformData(newResult);
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -92,7 +103,6 @@ export const AddModal = () => {
       air_velocity: formState.air_velocity,
       area_m2: formState.area_m2,
       fix_q: formState.fix_q,
-      availability: formState.availability,
     };
     if (
       (disable === 'Fix Q' && formState.fix_q !== 0) ||
@@ -101,24 +111,27 @@ export const AddModal = () => {
         formState.area_m2 !== 0) ||
       ((disable === 'm3/kW' || disable === 'cfm/HP') && formState.power_input)
     ) {
-      dispatch(startPostVector(vector, userUID, transformedData));
+      dispatch(
+        startPutVector(editVector.id, vector, transformedData, editVector)
+      );
       onResetForm();
       reverseTransformData(transformedData.newData);
       setOpen(false);
     } else {
-      dispatch(startPostVector(vector, userUID, transformedData));
+      startPutVector(editVector.id, vector, transformedData, editVector);
     }
   };
+
   return (
     <>
-      <Button sx={{ color: 'white' }} onClick={handleOpen}>
-        Equip Vector
-      </Button>
+      <IconButton color='warning' size='small' onClick={handleOpen}>
+        <EditIcon />
+      </IconButton>
       <Modal open={open} onClose={handleClose}>
         <form onSubmit={onSubmit}>
           <Box sx={style}>
             <Typography sx={{ mb: 4, textAlign: 'center' }} variant='h5'>
-              Equip Vector
+              Edit Equip Vector
             </Typography>
             <Grid
               container
@@ -258,7 +271,7 @@ export const AddModal = () => {
               }}
             >
               <Grid item sx={{ mt: 3 }}>
-                <Knobs />
+                <Knobs transform={transform} />
               </Grid>
               <Grid
                 container
@@ -286,8 +299,13 @@ export const AddModal = () => {
               }}
             >
               <Grid item>
-                <Button variant='contained' type='submit' disabled={isChecking}>
-                  Create Vector
+                <Button
+                  variant='contained'
+                  type='submit'
+                  color='success'
+                  disabled={isChecking}
+                >
+                  Update Vector
                 </Button>
               </Grid>
               <Grid item>

@@ -6,6 +6,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Typography,
 } from '@mui/material';
 import React from 'react';
 import Draggable from 'react-draggable';
@@ -48,7 +49,7 @@ export const DragTableArea = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {Array.isArray(areaVectors) &&
+            {Array.isArray(areaVectors) && areaVectors.length !== 0 ? (
               areaVectors.map((items) => (
                 <Draggable
                   key={items.id}
@@ -72,7 +73,17 @@ export const DragTableArea = () => {
                     })}
                   </TableRow>
                 </Draggable>
-              ))}
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={period.length + 1}
+                  style={{ textAlign: 'center' }}
+                >
+                  <Typography variant='h6'>No data</Typography>
+                </TableCell>
+              </TableRow>
+            )}
             <TableRow>
               <TableCell>Result</TableCell>
               {/* {resultSum

@@ -1,26 +1,30 @@
 import { result, transformData } from '../../helpers/datas/data';
-// import { startGetVectors } from '../../store';
-// import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from '@mui/icons-material/Delete';
 import Draggable from 'react-draggable';
 
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   newPositionForVector,
   resultValueVectors,
 } from '../../helpers/datas/calculations';
 import {
   Grid,
+  IconButton,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
+  Typography,
 } from '@mui/material';
+import { startDeleteVector } from '../../store/vector/thunks';
+import { EditModal } from './editModal';
 
 export const DragTableGlobal = () => {
-  const [resultSum, setResultSum] = useState([]);
+  const distpach = useDispatch();
+  const { vectors } = useSelector((state) => state.vector);
   const [state, setState] = useState({
     vectorId: '',
     position: {
@@ -28,7 +32,7 @@ export const DragTableGlobal = () => {
       y: 0,
     },
   });
-  const { vectors } = useSelector((state) => state.vector);
+  const [newVector] = useState(vectors);
   const period = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   const onStart = (e, ui) => {
@@ -45,9 +49,9 @@ export const DragTableGlobal = () => {
 
   const onStop = async (e, ui) => {
     await newPositionForVector(vectors, state);
-    const { newData } = await transformData(result);
-    const { newResults } = await resultValueVectors(newData, vectors);
-    setResultSum(newResults);
+  };
+  const onDeleteVector = async (id = '') => {
+    distpach(startDeleteVector(id));
   };
   const calculateColumnWidth = () => {
     const tableWidth = 859;
@@ -55,11 +59,8 @@ export const DragTableGlobal = () => {
     return tableWidth / numColumns;
   };
 
-  useEffect(() => {
-    const { newData } = transformData(result);
-    const { newResults } = resultValueVectors(newData, vectors);
-    setResultSum(newResults);
-  }, []);
+  const newData = transformData(result);
+  const { vectorSums } = resultValueVectors(newData, newVector);
 
   return (
     <Grid
@@ -85,7 +86,7 @@ export const DragTableGlobal = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {Array.isArray(vectors) &&
+            {Array.isArray(vectors) && vectors.length !== 0 ? (
               vectors.map((vector) => (
                 <Draggable
                   key={vector.id}
@@ -98,7 +99,13 @@ export const DragTableGlobal = () => {
                   onStop={onStop}
                 >
                   <TableRow id={vector.id} key={vector.id}>
-                    <TableCell>{vector.vector}</TableCell>
+                    <TableCell>
+                      {vector.vector}
+                      <IconButton onClick={() => onDeleteVector(vector.id)}>
+                        <DeleteIcon color='error' fontSize='small' />
+                      </IconButton>
+                      <EditModal vector={vector} />
+                    </TableCell>
                     {period.map((p) => {
                       const item = vector.vectors.find((v) => v.period === p);
                       return (
@@ -109,12 +116,21 @@ export const DragTableGlobal = () => {
                     })}
                   </TableRow>
                 </Draggable>
-              ))}
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={period.length + 1}
+                  style={{ textAlign: 'center' }}
+                >
+                  <Typography variant='h6'>No data</Typography>
+                </TableCell>
+              </TableRow>
+            )}
             <TableRow>
               <TableCell>Result</TableCell>
-              {resultSum
-                .slice()
-                .sort((a, b) => a.position - b.position)
+              {vectorSums
+                ?.sort((a, b) => a.position - b.position)
                 .map((r, index) => (
                   <TableCell key={index} style={{ textAlign: 'center' }}>
                     {r.value}

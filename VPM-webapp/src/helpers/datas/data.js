@@ -1,26 +1,69 @@
-import { postValueEquipVector } from '../api/valueEquipVector';
+import {
+  postValueEquipVector,
+  putValueEquipVector,
+} from '../api/valueEquipVector';
 // ? por subir
 export const generateData = (period) => {
-  const data = [];
+  const result = [];
 
   for (let i = 0; i <= period - 1; i++) {
     const point = { x: i, y: 0 };
-    data.push(point);
+    result.push(point);
   }
-  return data;
+  return { result };
 };
 const number = 10;
 
-export const result = generateData(number);
+export const { result } = generateData(number);
 
 export const transformData = (result = []) => {
   const newData = result.map((item, index) => ({
     position: ((index + 1) * 85.9).toFixed(1),
     value: item.y,
   }));
-  return { newData };
+  return newData;
 };
-
+export const transformGraphs = (data = {}) => {
+  const availabilityDecimal = data.availability / 100;
+  if (data.criteria === 'm/s' || data.criteria === 'ft/m') {
+    const newData = data.vectors
+      .slice()
+      .sort((a, b) => a.period - b.period)
+      .map((item) => ({
+        x: item.period - 1,
+        y:
+          item.value / availabilityDecimal / (data.air_velocity * data.area_m2),
+      }));
+    return newData;
+  }
+  if (data.criteria === 'm3/kW' || data.criteria === 'cfm/HP') {
+    const newData = data.vectors
+      .slice()
+      .sort((a, b) => a.period - b.period)
+      .map((item) => ({
+        x: item.period - 1,
+        y: item.value / availabilityDecimal / data.power_input,
+      }));
+    return newData;
+  }
+  if (data.criteria === 'Fix Q') {
+    const newData = data.vectors
+      .slice()
+      .sort((a, b) => a.period - b.period)
+      .map((item) => ({
+        x: item.period - 1,
+        y: item.value / availabilityDecimal / data.fix_q,
+      }));
+    return newData;
+  }
+};
+export const reverseTransformData = (data = []) => {
+  const originalData = data.map((item) => ({
+    position: item.position,
+    value: 0,
+  }));
+  return originalData;
+};
 export const calculateCriteria = (
   result = [],
   disable = '',
@@ -78,5 +121,20 @@ export const createValue = async (uidUser = '', data = [], uidVector) => {
       period: i + 1,
     };
     await postValueEquipVector(newCreatedValue);
+  }
+};
+export const putValue = async (data = [], vectors = {}) => {
+  const datas = vectors.vectors;
+  for (let i = 0; i < data.length; i++) {
+    const element = data[i];
+    const item = datas[i];
+    const id = item.id;
+    const { position: pos, value: val } = element;
+    const newValue = {
+      position: pos,
+      value: val,
+      period: i + 1,
+    };
+    await putValueEquipVector(id, newValue);
   }
 };

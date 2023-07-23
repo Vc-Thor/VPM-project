@@ -8,7 +8,6 @@ import {
 export const TextFieldCustom = ({
   size,
   disable,
-  dfValue,
   title,
   type,
   symbol,
@@ -30,7 +29,6 @@ export const TextFieldCustom = ({
           name={`${name}`}
           label={title}
           value={value}
-          defaultValue={dfValue}
           disabled={disable}
           onChange={onInputChange}
           inputProps={{

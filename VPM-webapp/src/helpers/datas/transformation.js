@@ -1,4 +1,7 @@
 export const tranformAreaVectors = (data = []) => {
+  if (!Array.isArray(data)) {
+    return { areaVectors: [] };
+  }
   const areaSums = {};
   data.forEach((item) => {
     item.vectors.forEach((vector, index) => {

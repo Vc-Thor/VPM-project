@@ -1,9 +1,11 @@
 import {
+  deleteEquipVector,
   getVectorById,
   getVectors,
   postVector,
+  putEquipVector,
 } from '../../helpers/api/vector';
-import { createValue } from '../../helpers/datas/data';
+import { createValue, putValue } from '../../helpers/datas/data';
 import {
   getVectorFailure,
   VectorStart,
@@ -12,6 +14,12 @@ import {
   postVectorSucces,
   postVectorFailure,
   postVectorStart,
+  deleteVectorStart,
+  deleteVectorFailure,
+  deleteVectorSucces,
+  putVectorStart,
+  putVectorFailure,
+  putVectorSucces,
 } from './vectorSlice';
 
 export const checkingVector = () => {
@@ -81,6 +89,37 @@ export const startPostVector = (vector = {}, userID = '', newData = []) => {
     if (!first) return distpach(postVectorFailure({ errorMessage }));
     distpach(postVectorSucces({ uid, message }));
     await createValue(userID, newData, uid);
+    const { ok, data, errorMessage: error } = await getVectors();
+    if (!ok) return getVectorFailure({ error });
+    distpach(getVectorSucces({ data }));
+  };
+};
+export const startPutVector = (
+  id = '',
+  vector = {},
+  datas = [],
+  editValue = {}
+) => {
+  return async (distpach) => {
+    distpach(putVectorStart());
+    const {
+      ok: first,
+      message,
+      errorMessage,
+    } = await putEquipVector(id, vector);
+    if (!first) return distpach(putVectorFailure({ errorMessage }));
+    await putValue(datas, editValue);
+    const { ok, data, errorMessage: error } = await getVectors();
+    if (!ok) return getVectorFailure({ error });
+    distpach(putVectorSucces({ message, data }));
+  };
+};
+export const startDeleteVector = (id = '') => {
+  return async (distpach) => {
+    distpach(deleteVectorStart());
+    const { ok: first, message, errorMessage } = await deleteEquipVector(id);
+    if (!first) return distpach(deleteVectorFailure({ errorMessage }));
+    distpach(deleteVectorSucces({ message }));
     const { ok, data, errorMessage: error } = await getVectors();
     if (!ok) return getVectorFailure({ error });
     distpach(getVectorSucces({ data }));

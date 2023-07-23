@@ -49,14 +49,28 @@ export const Sidebar = () => {
         </Toolbar>
         <Divider />
         <Button>
+          <Link to={'home'} style={{ textDecoration: 'none', color: 'white' }}>
+            Table
+          </Link>
+        </Button>
+        {/* <Button>
           <Link
             to={'projects'}
             style={{ textDecoration: 'none', color: 'white' }}
           >
             Projects
           </Link>
-        </Button>
+        </Button> */}
         <AddModal />
+        <Divider />
+        <Button>
+          <Link
+            to={'graphs'}
+            style={{ textDecoration: 'none', color: 'white' }}
+          >
+            Graphs
+          </Link>
+        </Button>
       </Drawer>
     </Box>
   );

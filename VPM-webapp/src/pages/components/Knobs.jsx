@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import { result } from '../../helpers/datas/data';
-export const Knobs = () => {
+export const Knobs = ({ transform }) => {
   const svgRef = useRef(null);
-  const [data, setData] = useState(result);
+  const [data, setData] = useState(transform || result);
 
   useEffect(() => {
     const svg = d3.select(svgRef.current);

@@ -87,7 +87,7 @@ export const putEquipVector = async (id = null, datas = null) => {
     const { msg } = data;
     return {
       ok: true,
-      msg,
+      message: msg,
     };
   } catch (err) {
     const { errors } = err.response.data;
@@ -95,6 +95,24 @@ export const putEquipVector = async (id = null, datas = null) => {
     return {
       ok: false,
       errorMessage,
+    };
+  }
+};
+export const deleteEquipVector = async (id = null) => {
+  if (!id) return;
+  try {
+    const { data } = await axiosVector.delete(`/${id}`);
+    const { msg: message } = data;
+    return {
+      ok: true,
+      message,
+    };
+  } catch (err) {
+    const { response } = err;
+    const { errors } = response.data;
+    return {
+      ok: false,
+      errorMessage: errors[0].msg,
     };
   }
 };

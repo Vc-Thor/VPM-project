@@ -22,13 +22,7 @@ export const vectorGet = async (req = request, res = response) => {
       },
     ],
     attributes: {
-      exclude: [
-        'user_id',
-        'area_id',
-        'sub_area_id',
-        'activity_id',
-        'criteria_id',
-      ],
+      exclude: ['user_id'],
     },
   });
   if (vectors.length !== 0) {
@@ -111,8 +105,13 @@ export const vectorPost = async (req = request, res = response) => {
 };
 export const vectorPut = async (req = request, res = response) => {
   const uuid = req.params.id;
-  const { id, ...resto } = req.body;
+  const { id, vector, ...resto } = req.body;
+
   const upVector = await Vector.findByPk(uuid);
+  const { vector: oldName } = upVector;
+  if (vector !== oldName) {
+    resto.vector = vector;
+  }
   await upVector.update(resto);
   res.status(200).json({ msg: 'update vector' });
 };

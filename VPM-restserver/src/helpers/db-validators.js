@@ -1,3 +1,4 @@
+import { Op } from 'sequelize';
 import { Activity } from '../models/activity.models.js';
 import { Area } from '../models/area.models.js';
 import { Criteria } from '../models/criteria.models.js';
@@ -108,9 +109,13 @@ export const noProject = async (id = '') => {
     throw new Error('this project does not exists');
   }
 };
-export const validatorVector = async (vector = '') => {
+export const validatorVector = async (vector = '', { req }) => {
+  const { id } = req.params;
   const existsVector = await Vector.findOne({
-    where: { vector: vector },
+    where: {
+      vector: vector,
+      id: { [Op.ne]: id },
+    },
   });
   if (existsVector) {
     throw new Error(`this vector: '${vector}' already exists`);

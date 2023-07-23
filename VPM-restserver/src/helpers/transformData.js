@@ -52,9 +52,13 @@ export const vectorForm = (vectors = [], vector = {}) => {
     position: v.position,
     user: v.user?.user_name,
     area: v.area?.name,
+    area_id: v.area_id,
     sub_area: v.subarea?.name,
+    sub_area_id: v.sub_area_id,
     activity: v.activity?.name,
+    activity_id: v.activity_id,
     criteria: v.criterion?.name,
+    criteria_id: v.criteria_id,
     vectors: v.valuevectors,
   }));
   const newVectorFormObj = {

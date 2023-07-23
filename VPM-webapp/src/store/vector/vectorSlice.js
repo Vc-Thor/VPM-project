@@ -129,6 +129,21 @@ export const vectorSlice = createSlice({
       state.message = null;
       state.errorMessage = payload.errorMessage;
     },
+    deleteVectorStart: (state) => {
+      state.loading = 'checking';
+      state.message = null;
+      state.errorMessage = null;
+    },
+    deleteVectorSucces: (state, { payload }) => {
+      state.loading = 'success';
+      state.message = payload.message;
+      state.errorMessage = null;
+    },
+    deleteVectorFailure: (state, { payload }) => {
+      state.loading = 'not-loaded';
+      state.message = null;
+      state.errorMessage = payload.errorMessage;
+    },
   },
 });
 
@@ -143,4 +158,7 @@ export const {
   putVectorStart,
   putVectorSucces,
   putVectorFailure,
+  deleteVectorStart,
+  deleteVectorSucces,
+  deleteVectorFailure,
 } = vectorSlice.actions;

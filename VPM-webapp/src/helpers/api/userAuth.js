@@ -3,7 +3,7 @@ import { axiosAuth } from './api';
 
 export const loginUser = async (user = null) => {
   if (!user) return;
-  console.log(user);
+
   try {
     const { data } = await axiosAuth.post('/login', user);
     const { token } = await data;

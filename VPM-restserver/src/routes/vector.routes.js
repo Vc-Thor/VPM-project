@@ -22,6 +22,7 @@ vectorRt.post(
   '/newVector',
   [
     check('vector', 'vector is requerid').not().isEmpty(),
+    check('vector').custom((value, { req }) => validatorVector(value, { req })),
     check('area_id', 'area is requerid').not().isEmpty(),
     check('sub_area_id', 'sub_area is requerid').not().isEmpty(),
     check('activity_id', 'activity is requerid').not().isEmpty(),
@@ -35,7 +36,7 @@ vectorRt.put(
   '/:id',
   [
     check('id').custom(noVector),
-    check('vector').custom(validatorVector),
+    check('vector').custom((value, { req }) => validatorVector(value, { req })),
     fieldValidation,
   ],
   vectorPut,
