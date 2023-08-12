@@ -8,7 +8,7 @@ import { startPostVector } from '../../store';
 import { Knobs } from './Knobs';
 import {
   calculateCriteria,
-  result,
+  generateData,
   reverseTransformData,
   transformData,
 } from '../../helpers/datas/data';
@@ -20,7 +20,7 @@ const style = {
   width: 1000,
   height: 600,
   bgcolor: 'background.paper',
-  border: '2px solid #000',
+  borderRadius: 2,
   boxShadow: 24,
   p: 4,
 };
@@ -40,6 +40,7 @@ const formData = {
 export const AddModal = () => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
+  const { period } = useSelector((state) => state.setting);
   const {
     vector,
     availability,
@@ -55,7 +56,7 @@ export const AddModal = () => {
     formState,
     onResetForm,
   } = useForm(formData);
-
+  const { result } = generateData(period);
   const { criterias } = useSelector((state) => state.criteria);
   const { areas } = useSelector((state) => state.area);
   const { subareas } = useSelector((state) => state.subarea);

@@ -12,10 +12,13 @@ export const generateData = (period) => {
   }
   return { result };
 };
-const number = 10;
-
-export const { result } = generateData(number);
-
+export const crearArrayConNumeros = (numero) => {
+  const array = [];
+  for (let i = 0; i < numero; i++) {
+    array.push(i + 1);
+  }
+  return array;
+};
 export const transformData = (result = []) => {
   const newData = result.map((item, index) => ({
     position: ((index + 1) * 85.9).toFixed(1),

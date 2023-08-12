@@ -1,4 +1,8 @@
-import { result, transformData } from '../../helpers/datas/data';
+import {
+  crearArrayConNumeros,
+  generateData,
+  transformData,
+} from '../../helpers/datas/data';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Draggable from 'react-draggable';
 
@@ -33,11 +37,14 @@ export const DragTableGlobal = () => {
     },
   });
   const [newVector] = useState(vectors);
-  const period = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  const { period } = useSelector((state) => state.setting);
+  const { result } = generateData(period);
+  const arrayPeriod = crearArrayConNumeros(period);
 
   const onStart = (e, ui) => {
     const position = vectors.find((x) => x.id === ui.node.id).position;
     setState({ vectorId: ui.node.id, position: { x: position, y: 0 } });
+    // distpach(startGetVectors());
   };
 
   const onDrag = (e, ui) => {
@@ -55,7 +62,7 @@ export const DragTableGlobal = () => {
   };
   const calculateColumnWidth = () => {
     const tableWidth = 859;
-    const numColumns = period.length;
+    const numColumns = arrayPeriod.length;
     return tableWidth / numColumns;
   };
 
@@ -78,7 +85,7 @@ export const DragTableGlobal = () => {
           <TableHead>
             <TableRow>
               <TableCell variant='head'>Equip Vector</TableCell>
-              {period.map((p, index) => (
+              {arrayPeriod.map((p, index) => (
                 <TableCell key={index} variant='head'>
                   Period {p}
                 </TableCell>
@@ -106,7 +113,7 @@ export const DragTableGlobal = () => {
                       </IconButton>
                       <EditModal vector={vector} />
                     </TableCell>
-                    {period.map((p) => {
+                    {arrayPeriod.map((p) => {
                       const item = vector.vectors.find((v) => v.period === p);
                       return (
                         <TableCell key={p} style={{ textAlign: 'center' }}>
@@ -120,7 +127,7 @@ export const DragTableGlobal = () => {
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={period.length + 1}
+                  colSpan={arrayPeriod.length + 1}
                   style={{ textAlign: 'center' }}
                 >
                   <Typography variant='h6'>No data</Typography>

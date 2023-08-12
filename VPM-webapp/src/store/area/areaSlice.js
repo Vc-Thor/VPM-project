@@ -6,6 +6,7 @@ export const areaSlice = createSlice({
     areas: [],
     loading: false,
     errorMessage: null,
+    message: null,
   },
   reducers: {
     getAreasStart: (state) => {
@@ -23,9 +24,42 @@ export const areaSlice = createSlice({
       state.areas = [];
       state.errorMessage = payload.errorMessage;
     },
+    deleteAreaStart: (state) => {
+      state.loading = true;
+      state.errorMessage = null;
+    },
+    deleteAreaSucces: (state, { payload }) => {
+      state.loading = false;
+      state.message = payload.message;
+      state.errorMessage = null;
+    },
+    deleteAreaFailure: (state, { payload }) => {
+      state.loading = false;
+      state.errorMessage = payload.errorMessage;
+    },
+    postAreaStart: (state) => {
+      state.loading = true;
+    },
+    postAreaSucces: (state, { payload }) => {
+      state.loading = false;
+      state.message = payload.message;
+    },
+    postAreaFailure: (state, { payload }) => {
+      state.loading = false;
+      state.errorMessage = payload.errorMessage;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { getAreasStart, getAreasSuccess, getAreasFailure } =
-  areaSlice.actions;
+export const {
+  getAreasStart,
+  getAreasSuccess,
+  getAreasFailure,
+  deleteAreaStart,
+  deleteAreaSucces,
+  deleteAreaFailure,
+  postAreaStart,
+  postAreaSucces,
+  postAreaFailure,
+} = areaSlice.actions;

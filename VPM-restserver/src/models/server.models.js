@@ -11,6 +11,7 @@ import { activityRt } from '../routes/activity.routes.js';
 import { projectRt } from '../routes/project.routes.js';
 import { vectorRt } from '../routes/vector.routes.js';
 import { valueVectorRT } from '../routes/valueVector.routes.js';
+import { settingRt } from '../routes/setting.routes.js';
 export class Server {
   constructor() {
     this.app = express();
@@ -26,6 +27,7 @@ export class Server {
       project: '/api/project',
       vector: '/api/vector',
       values: '/api/values',
+      setting: '/api/setting',
     };
     this.dbConnection();
     this.middlewares();
@@ -56,6 +58,7 @@ export class Server {
     this.app.use(this.paths.project, projectRt);
     this.app.use(this.paths.vector, vectorRt);
     this.app.use(this.paths.values, valueVectorRT);
+    this.app.use(this.paths.setting, settingRt);
   }
 
   listen() {

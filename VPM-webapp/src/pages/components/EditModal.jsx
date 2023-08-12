@@ -29,7 +29,6 @@ const style = {
   width: 1000,
   height: 600,
   bgcolor: 'background.paper',
-  border: '2px solid #000',
   boxShadow: 24,
   p: 4,
 };
@@ -37,7 +36,7 @@ const style = {
 export const EditModal = ({ vector: editVector }) => {
   const formData = {
     vector: editVector.vector || '',
-    availability: editVector.availability || 100,
+    availability: editVector.availability,
     power_input: editVector.power_input || 0,
     air_velocity: editVector.air_velocity || 0,
     area_m2: editVector.area_m2 || 0,
@@ -103,6 +102,7 @@ export const EditModal = ({ vector: editVector }) => {
       air_velocity: formState.air_velocity,
       area_m2: formState.area_m2,
       fix_q: formState.fix_q,
+      availability: formState.availability,
     };
     if (
       (disable === 'Fix Q' && formState.fix_q !== 0) ||

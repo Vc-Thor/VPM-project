@@ -120,8 +120,6 @@ export const startDeleteVector = (id = '') => {
     const { ok: first, message, errorMessage } = await deleteEquipVector(id);
     if (!first) return distpach(deleteVectorFailure({ errorMessage }));
     distpach(deleteVectorSucces({ message }));
-    const { ok, data, errorMessage: error } = await getVectors();
-    if (!ok) return getVectorFailure({ error });
-    distpach(getVectorSucces({ data }));
+    distpach(startGetVectors());
   };
 };

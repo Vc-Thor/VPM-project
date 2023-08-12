@@ -27,3 +27,6 @@ export const axiosVector = axios.create({
 export const axiosValuesEquip = axios.create({
   baseURL: `http://${devConnection || prodConnection}/api/values`,
 });
+export const axiosSetting = axios.create({
+  baseURL: `http://${devConnection || prodConnection}/api/setting`,
+});

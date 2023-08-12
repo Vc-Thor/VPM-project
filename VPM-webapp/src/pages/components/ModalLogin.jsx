@@ -3,7 +3,7 @@ import { useForm } from '../../hooks/useForm';
 import { Counter } from './Counter';
 import { useDispatch, useSelector } from 'react-redux';
 import { startLogin } from '../../store/auth/thunks';
-import { useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 const style = {
   position: 'absolute',
   top: '50%',
@@ -20,9 +20,9 @@ const formData = {
   pass: '',
 };
 export const ModalLogin = () => {
+  const nav = useNavigate()
   const { errorMessage, email: userEmail } = useSelector((state) => state.auth);
   const { pass, passValid, onInputChange, formState } = useForm(formData);
-  const isChecking = useCallback(() => status === 'checking', [status]);
   const dispatch = useDispatch();
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -31,6 +31,7 @@ export const ModalLogin = () => {
       pass: formState.pass,
     };
     dispatch(startLogin(user));
+    nav('VentilationProjectManager/home');
   };
   return (
     <form onSubmit={onSubmit}>
@@ -70,7 +71,6 @@ export const ModalLogin = () => {
           </Grid>
         </Grid>
         <Button
-          disabled={isChecking}
           type='submit'
           variant='contained'
           sx={{ width: 500, mt: 1 }}

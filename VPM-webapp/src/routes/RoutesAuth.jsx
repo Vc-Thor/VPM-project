@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
-import { Sidebar } from '../pages/components/Sidebar';
-import { AreaGraphs, Home, Projects } from '../pages';
-import { Container } from '@mui/material';
+import { Sidebar, NavBar } from '../pages/components';
+import { AreaGraphs, Home } from '../pages';
+import { Container, Grid } from '@mui/material';
 
 export const RoutesAuth = () => {
   return (
@@ -9,11 +9,13 @@ export const RoutesAuth = () => {
       sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'start' }}
     >
       <Sidebar />
-      <Routes>
-        <Route path='home' element={<Home />} />
-        <Route path='projects' element={<Projects />} />
-        <Route path='graphs' element={<AreaGraphs />} />
-      </Routes>
+      <NavBar />
+      <Grid item sx={{ mt: 5 }}>
+        <Routes>
+          <Route path='home' element={<Home />} />
+          <Route path='graphs' element={<AreaGraphs />} />
+        </Routes>
+      </Grid>
     </Container>
   );
 };

@@ -17,12 +17,23 @@ export const SelectOption = ({
           onChange={onInputChange}
           name={name}
           label={title}
+          MenuProps={{
+            PaperProps: {
+              style: {
+                maxHeight: 250,
+              },
+            },
+          }}
         >
-          {data.map((d) => (
-            <MenuItem key={d.id} value={d.id}>
-              {d.name}
-            </MenuItem>
-          ))}
+          {Array.isArray(data) ? (
+            data.map((d) => (
+              <MenuItem key={d.id} value={d.id}>
+                {d.name}
+              </MenuItem>
+            ))
+          ) : (
+            <MenuItem>No data</MenuItem>
+          )}
         </Select>
       </FormControl>
     </div>

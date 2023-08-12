@@ -1,7 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
-import { result } from '../../helpers/datas/data';
+import { generateData } from '../../helpers/datas/data';
+import { useSelector } from 'react-redux';
 export const Knobs = ({ transform }) => {
+  const { period } = useSelector((state) => state.setting);
+  const { result } = generateData(period);
   const svgRef = useRef(null);
   const [data, setData] = useState(transform || result);
 

@@ -53,14 +53,6 @@ export const Sidebar = () => {
             Table
           </Link>
         </Button>
-        {/* <Button>
-          <Link
-            to={'projects'}
-            style={{ textDecoration: 'none', color: 'white' }}
-          >
-            Projects
-          </Link>
-        </Button> */}
         <AddModal />
         <Divider />
         <Button>

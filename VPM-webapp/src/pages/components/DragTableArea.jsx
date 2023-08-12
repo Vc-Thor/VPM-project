@@ -12,14 +12,17 @@ import React from 'react';
 import Draggable from 'react-draggable';
 import { useSelector } from 'react-redux';
 import { tranformAreaVectors } from '../../helpers/datas/transformation';
+import { crearArrayConNumeros } from '../../helpers/datas/data';
 
 export const DragTableArea = () => {
   const { vectors } = useSelector((state) => state.vector);
+  const { period } = useSelector((state) => state.setting);
   const { areaVectors } = tranformAreaVectors(vectors);
-  const period = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  const arrayPeriod = crearArrayConNumeros(period);
+
   const calculateColumnWidth = () => {
     const tableWidth = 859;
-    const numColumns = period.length;
+    const numColumns = arrayPeriod.length;
     return tableWidth / numColumns;
   };
   const onStart = () => {};
@@ -40,8 +43,8 @@ export const DragTableArea = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell variant='head'>Equip Vector</TableCell>
-              {period.map((p, index) => (
+              <TableCell variant='head'>Area Vector</TableCell>
+              {arrayPeriod.map((p, index) => (
                 <TableCell key={index} variant='head'>
                   Period {p}
                 </TableCell>
@@ -63,7 +66,7 @@ export const DragTableArea = () => {
                 >
                   <TableRow id={items.id} key={items.id}>
                     <TableCell>{items.area}</TableCell>
-                    {period.map((p) => {
+                    {arrayPeriod.map((p) => {
                       const item = items.vectors.find((v) => v.period === p);
                       return (
                         <TableCell key={p} style={{ textAlign: 'center' }}>
@@ -77,7 +80,7 @@ export const DragTableArea = () => {
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={period.length + 1}
+                  colSpan={arrayPeriod.length + 1}
                   style={{ textAlign: 'center' }}
                 >
                   <Typography variant='h6'>No data</Typography>

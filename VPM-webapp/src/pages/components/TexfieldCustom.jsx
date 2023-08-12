@@ -20,7 +20,7 @@ export const TextFieldCustom = ({
   return (
     <div>
       <FormControl sx={{ width: `${size}px` }} variant='outlined'>
-        <InputLabel htmlFor='outlined-adornment-password'>{title}</InputLabel>
+        <InputLabel>{title}</InputLabel>
         <OutlinedInput
           type={`${type}`}
           endAdornment={
