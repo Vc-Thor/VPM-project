@@ -5,7 +5,6 @@ import {
 // ? por subir
 export const generateData = (period) => {
   const result = [];
-
   for (let i = 0; i <= period - 1; i++) {
     const point = { x: i, y: 0 };
     result.push(point);

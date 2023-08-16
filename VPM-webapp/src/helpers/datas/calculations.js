@@ -20,28 +20,20 @@ export const newPositionForVector = async (vectors = [], state = {}) => {
     await putEquipVector(id, pos);
   }
 };
-export const resultValueVectors = (newResult = [], vectors = []) => {
+export const resultValueVectors = (baseArray = [], vectors = []) => {
   if (!Array.isArray(vectors)) {
     return { newResults: [] };
   }
-  const items = vectors.slice().map((x) => x.vectors);
-  const positionSums = {};
-  items.forEach((i) => {
-    i.forEach((vv) => {
-      const { position: pos, value: valueVector, period: periodVector } = vv;
-      const positionKey = `${pos}-${periodVector}`;
-      if (!positionSums[positionKey]) {
-        positionSums[positionKey] = {
-          position: pos,
-          value: valueVector,
-          period: periodVector,
-        };
-      } else {
-        positionSums[positionKey].value += valueVector;
+  const vectorSums = baseArray.map((baseItem) => ({ ...baseItem }));
+  vectors.forEach((array) => {
+    array.vectors.forEach((item) => {
+      const existeItem = vectorSums.find(
+        (x) => Number(x.position) === item.position
+      );
+      if (existeItem) {
+        existeItem.value += item.value;
       }
     });
   });
-  const vectorSums = Object.values(positionSums);
-
   return { vectorSums };
 };

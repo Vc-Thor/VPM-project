@@ -8,7 +8,6 @@ import { startPostVector } from '../../store';
 import { Knobs } from './Knobs';
 import {
   calculateCriteria,
-  generateData,
   reverseTransformData,
   transformData,
 } from '../../helpers/datas/data';
@@ -40,7 +39,6 @@ const formData = {
 export const AddModal = () => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
-  const { period } = useSelector((state) => state.setting);
   const {
     vector,
     availability,
@@ -56,13 +54,14 @@ export const AddModal = () => {
     formState,
     onResetForm,
   } = useForm(formData);
-  const { result } = generateData(period);
   const { criterias } = useSelector((state) => state.criteria);
   const { areas } = useSelector((state) => state.area);
   const { subareas } = useSelector((state) => state.subarea);
   const { activitys } = useSelector((state) => state.activity);
   const { uid: userUID } = useSelector((state) => state.auth);
   const { loading } = useSelector((state) => state.vector);
+  const { unit } = useSelector((state) => state.setting);
+  const [valueKnobs, setValueKnobs] = useState([]);
   const isChecking = useMemo(() => loading === 'checking', [loading]);
 
   const handleOpen = () => setOpen(true);
@@ -78,7 +77,7 @@ export const AddModal = () => {
     return { disable };
   };
   const { disable } = disabled(criteria);
-  const { newResult } = calculateCriteria(result, disable, formState);
+  const { newResult } = calculateCriteria(valueKnobs, disable, formState);
   const transformedData = transformData(newResult);
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -110,6 +109,7 @@ export const AddModal = () => {
       dispatch(startPostVector(vector, userUID, transformedData));
     }
   };
+  console.log(unit);
   return (
     <>
       <Button sx={{ color: 'white' }} onClick={handleOpen}>
@@ -259,7 +259,7 @@ export const AddModal = () => {
               }}
             >
               <Grid item sx={{ mt: 3 }}>
-                <Knobs />
+                <Knobs valueKnobs={valueKnobs} setValueKnobs={setValueKnobs} />
               </Grid>
               <Grid
                 container

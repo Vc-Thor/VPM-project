@@ -37,10 +37,9 @@ export const DragTableGlobal = () => {
     },
   });
   const [newVector] = useState(vectors);
-  const { period } = useSelector((state) => state.setting);
+  const { period, leakage } = useSelector((state) => state.setting);
   const { result } = generateData(period);
   const arrayPeriod = crearArrayConNumeros(period);
-
   const onStart = (e, ui) => {
     const position = vectors.find((x) => x.id === ui.node.id).position;
     setState({ vectorId: ui.node.id, position: { x: position, y: 0 } });
@@ -78,75 +77,132 @@ export const DragTableGlobal = () => {
         display: 'flex',
         justifyContent: 'center',
         overflow: 'scroll',
+        flexDirection: 'row',
       }}
     >
-      <TableContainer>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell variant='head'>Equip Vector</TableCell>
-              {arrayPeriod.map((p, index) => (
-                <TableCell key={index} variant='head'>
-                  Period {p}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {Array.isArray(vectors) && vectors.length !== 0 ? (
-              vectors.map((vector) => (
-                <Draggable
-                  key={vector.id}
-                  bounds={{ left: 0 }}
-                  axis='x'
-                  defaultPosition={{ x: vector.position, y: 0 }}
-                  grid={[calculateColumnWidth(), 50]}
-                  onStart={onStart}
-                  onDrag={onDrag}
-                  onStop={onStop}
-                >
-                  <TableRow id={vector.id} key={vector.id}>
-                    <TableCell>
-                      {vector.vector}
-                      <IconButton onClick={() => onDeleteVector(vector.id)}>
+      <Grid>
+        <TableContainer>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell variant='head'>Equip Vector</TableCell>
+                <TableCell variant='head'>Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {Array.isArray(vectors) && vectors.length !== 0 ? (
+                vectors.map((item) => (
+                  <TableRow key={item.id}>
+                    <TableCell>{item.vector}</TableCell>
+                    <TableCell size='small'>
+                      <IconButton onClick={() => onDeleteVector(item.id)}>
                         <DeleteIcon color='error' fontSize='small' />
                       </IconButton>
-                      <EditModal vector={vector} />
+                      <EditModal vector={item} />
                     </TableCell>
-                    {arrayPeriod.map((p) => {
-                      const item = vector.vectors.find((v) => v.period === p);
-                      return (
-                        <TableCell key={p} style={{ textAlign: 'center' }}>
-                          {item && item.value}
-                        </TableCell>
-                      );
-                    })}
                   </TableRow>
-                </Draggable>
-              ))
-            ) : (
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={arrayPeriod.length + 1}
+                    style={{ textAlign: 'center' }}
+                  >
+                    <Typography variant='h6'>No data</Typography>
+                  </TableCell>
+                </TableRow>
+              )}
+              {leakage ? (
+                <TableRow>
+                  <TableCell>Leakage</TableCell>
+                </TableRow>
+              ) : (
+                ''
+              )}
               <TableRow>
-                <TableCell
-                  colSpan={arrayPeriod.length + 1}
-                  style={{ textAlign: 'center' }}
-                >
-                  <Typography variant='h6'>No data</Typography>
-                </TableCell>
+                <TableCell>Result</TableCell>
               </TableRow>
-            )}
-            <TableRow>
-              <TableCell>Result</TableCell>
-              {vectorSums
-                ?.sort((a, b) => a.position - b.position)
-                .map((r, index) => (
-                  <TableCell key={index} style={{ textAlign: 'center' }}>
-                    {r.value}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Grid>
+      <Grid>
+        <TableContainer>
+          <Table>
+            <TableHead>
+              <TableRow>
+                {arrayPeriod.map((p, index) => (
+                  <TableCell key={index} variant='head'>
+                    Period {p}
                   </TableCell>
                 ))}
-            </TableRow>
-          </TableBody>
-        </Table>
-      </TableContainer>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {Array.isArray(vectors) && vectors.length !== 0 ? (
+                vectors.map((vector) => (
+                  <Draggable
+                    key={vector.id}
+                    bounds={{ left: 0 }}
+                    axis='x'
+                    defaultPosition={{ x: vector.position, y: 0 }}
+                    grid={[calculateColumnWidth(), 50]}
+                    onStart={onStart}
+                    onDrag={onDrag}
+                    onStop={onStop}
+                  >
+                    <TableRow id={vector.id} key={vector.id}>
+                      {arrayPeriod.map((p) => {
+                        const item = vector.vectors.find((v) => v.period === p);
+                        return (
+                          <TableCell key={p} style={{ textAlign: 'center' }}>
+                            {item && item.value}
+                          </TableCell>
+                        );
+                      })}
+                    </TableRow>
+                  </Draggable>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={arrayPeriod.length + 1}
+                    style={{ textAlign: 'center' }}
+                  >
+                    <Typography variant='h6'>No data</Typography>
+                  </TableCell>
+                </TableRow>
+              )}
+              {leakage ? (
+                <TableRow>
+                  <TableCell style={{ textAlign: 'center' }}>v</TableCell>
+                  <TableCell style={{ textAlign: 'center' }}>a</TableCell>
+                  <TableCell style={{ textAlign: 'center' }}>l</TableCell>
+                  <TableCell style={{ textAlign: 'center' }}>o</TableCell>
+                  <TableCell style={{ textAlign: 'center' }}>r</TableCell>
+                  <TableCell style={{ textAlign: 'center' }}>e</TableCell>
+                  <TableCell style={{ textAlign: 'center' }}>s</TableCell>
+                  <TableCell style={{ textAlign: 'center' }}>l</TableCell>
+                  <TableCell style={{ textAlign: 'center' }}>e</TableCell>
+                  <TableCell style={{ textAlign: 'center' }}>a</TableCell>
+                  <TableCell style={{ textAlign: 'center' }}>k</TableCell>
+                </TableRow>
+              ) : (
+                ''
+              )}
+              <TableRow>
+                {vectorSums
+                  ?.sort((a, b) => a.position - b.position)
+                  .map((r, index) => (
+                    <TableCell key={index} style={{ textAlign: 'center' }}>
+                      {r.value}
+                    </TableCell>
+                  ))}
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Grid>
     </Grid>
   );
 };
