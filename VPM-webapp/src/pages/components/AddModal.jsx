@@ -60,7 +60,7 @@ export const AddModal = () => {
   const { activitys } = useSelector((state) => state.activity);
   const { uid: userUID } = useSelector((state) => state.auth);
   const { loading } = useSelector((state) => state.vector);
-  const { unit } = useSelector((state) => state.setting);
+  // const { unit } = useSelector((state) => state.setting);
   const [valueKnobs, setValueKnobs] = useState([]);
   const isChecking = useMemo(() => loading === 'checking', [loading]);
 
@@ -109,7 +109,6 @@ export const AddModal = () => {
       dispatch(startPostVector(vector, userUID, transformedData));
     }
   };
-  console.log(unit);
   return (
     <>
       <Button sx={{ color: 'white' }} onClick={handleOpen}>

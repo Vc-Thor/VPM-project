@@ -20,6 +20,7 @@ export const newPositionForVector = async (vectors = [], state = {}) => {
     await putEquipVector(id, pos);
   }
 };
+// ! debe recibir dos posiciones: x y deltaX, la x se usa para el vector y la deltaX para los valores del vector
 export const resultValueVectors = (baseArray = [], vectors = []) => {
   if (!Array.isArray(vectors)) {
     return { newResults: [] };

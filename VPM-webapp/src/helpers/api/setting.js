@@ -32,7 +32,6 @@ export const putSetting = async (id = null, setting = null) => {
       message,
     };
   } catch (err) {
-    console.log(err);
     const { errors } = await err.response.data;
     const errorMessage = errors.map((e) => e.msg)[0];
     return {

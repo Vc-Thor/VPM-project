@@ -23,11 +23,14 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import { startDeleteVector } from '../../store/vector/thunks';
+import {
+  startDeleteVector,
+  // startPutVectorPos,
+} from '../../store/vector/thunks';
 import { EditModal } from './editModal';
 
 export const DragTableGlobal = () => {
-  const distpach = useDispatch();
+  const dispatch = useDispatch();
   const { vectors } = useSelector((state) => state.vector);
   const [state, setState] = useState({
     vectorId: '',
@@ -43,7 +46,6 @@ export const DragTableGlobal = () => {
   const onStart = (e, ui) => {
     const position = vectors.find((x) => x.id === ui.node.id).position;
     setState({ vectorId: ui.node.id, position: { x: position, y: 0 } });
-    // distpach(startGetVectors());
   };
 
   const onDrag = (e, ui) => {
@@ -54,10 +56,11 @@ export const DragTableGlobal = () => {
   };
 
   const onStop = async (e, ui) => {
+    console.log(state);
     await newPositionForVector(vectors, state);
   };
   const onDeleteVector = async (id = '') => {
-    distpach(startDeleteVector(id));
+    dispatch(startDeleteVector(id));
   };
   const calculateColumnWidth = () => {
     const tableWidth = 859;

@@ -140,3 +140,4 @@ export const putValue = async (data = [], vectors = {}) => {
     await putValueEquipVector(id, newValue);
   }
 };
+export const modPos = () => {};

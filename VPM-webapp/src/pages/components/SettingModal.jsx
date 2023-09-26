@@ -75,7 +75,6 @@ export const SettingModal = () => {
       period: formState.period,
       m3kw: formState.m3kw,
     };
-    console.log(setting);
     dispatch(startPutSetting(id, setting));
   };
   useEffect(() => {

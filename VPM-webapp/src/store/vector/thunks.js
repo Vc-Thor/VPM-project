@@ -5,6 +5,7 @@ import {
   postVector,
   putEquipVector,
 } from '../../helpers/api/vector';
+import { newPositionForVector } from '../../helpers/datas/calculations';
 import { createValue, putValue } from '../../helpers/datas/data';
 import {
   getVectorFailure,
@@ -112,6 +113,16 @@ export const startPutVector = (
     const { ok, data, errorMessage: error } = await getVectors();
     if (!ok) return getVectorFailure({ error });
     distpach(putVectorSucces({ message, data }));
+  };
+};
+
+export const startPutVectorPos = (vectors = [], state = {}) => {
+  return async (distpach) => {
+    distpach(putVectorStart());
+    await newPositionForVector(vectors, state);
+    const { ok, data, errorMessage: error } = await getVectors();
+    if (!ok) return getVectorFailure({ error });
+    distpach(putVectorSucces({ data }));
   };
 };
 export const startDeleteVector = (id = '') => {
