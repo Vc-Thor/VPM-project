@@ -16,12 +16,10 @@ export const newPositionForVector = async (vectors = [], state = {}) => {
       const pos = {
         position: state.position.x + position,
       };
-      console.log(j + 1);
       await putValueEquipVector(id, pos);
     }
     const { ok: innerOK } = await putEquipVector(id, pos);
     ok = innerOK;
-    console.log(i + 1);
   }
   return ok;
 };
@@ -42,4 +40,18 @@ export const resultValueVectors = (baseArray = [], vectors = []) => {
     });
   });
   return { vectorSums };
+};
+
+export const calculateGlobalLeakage = (vectors = [], leakage = 0) => {
+  if (!Array.isArray(vectors)) {
+    return { globalLeakage: [] };
+  }
+  const globalLeakage = [];
+  for (let i = 0; i < vectors.length; i++) {
+    const { value, position: pos } = vectors[i];
+    const valueWLeakage = value * (leakage / 100);
+    const vectorLeakage = { position: pos, value: valueWLeakage.toFixed(2) };
+    globalLeakage.push(vectorLeakage);
+  }
+  return { globalLeakage };
 };

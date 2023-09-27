@@ -9,6 +9,7 @@ import Draggable from 'react-draggable';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  calculateGlobalLeakage,
   newPositionForVector,
   resultValueVectors,
 } from '../../helpers/datas/calculations';
@@ -31,6 +32,7 @@ export const DragTableGlobal = () => {
   const dispatch = useDispatch();
   const { vectors } = useSelector((state) => state.vector);
   const [vector, setVector] = useState();
+  const [leakVal, sertLeakVal] = useState();
   const [sums, SetSums] = useState();
   const [state, setState] = useState({
     stop: false,
@@ -40,9 +42,12 @@ export const DragTableGlobal = () => {
       y: 0,
     },
   });
-  const { period, leakage } = useSelector((state) => state.setting);
+  const { period, leakage, value_leakage } = useSelector(
+    (state) => state.setting
+  );
   const { result } = generateData(period);
   const arrayPeriod = crearArrayConNumeros(period);
+  console.log(period);
   const onStart = (e, ui) => {
     const position = vectors.find((x) => x.id === ui.node.id).position;
     setState({
@@ -79,6 +84,8 @@ export const DragTableGlobal = () => {
     getVectors()
       .then((res) => setVector(res.data))
       .catch((err) => console.log(err));
+    const { globalLeakage } = calculateGlobalLeakage(sums, value_leakage);
+    sertLeakVal(globalLeakage);
   }, [state.position]);
 
   console.log(vector);
@@ -189,17 +196,14 @@ export const DragTableGlobal = () => {
               )}
               {leakage ? (
                 <TableRow>
-                  <TableCell style={{ textAlign: 'center' }}>v</TableCell>
-                  <TableCell style={{ textAlign: 'center' }}>a</TableCell>
-                  <TableCell style={{ textAlign: 'center' }}>l</TableCell>
-                  <TableCell style={{ textAlign: 'center' }}>o</TableCell>
-                  <TableCell style={{ textAlign: 'center' }}>r</TableCell>
-                  <TableCell style={{ textAlign: 'center' }}>e</TableCell>
-                  <TableCell style={{ textAlign: 'center' }}>s</TableCell>
-                  <TableCell style={{ textAlign: 'center' }}>l</TableCell>
-                  <TableCell style={{ textAlign: 'center' }}>e</TableCell>
-                  <TableCell style={{ textAlign: 'center' }}>a</TableCell>
-                  <TableCell style={{ textAlign: 'center' }}>k</TableCell>
+                  {leakVal.map((lv) => (
+                    <TableCell
+                      key={lv.position}
+                      style={{ textAlign: 'center' }}
+                    >
+                      {lv.value}
+                    </TableCell>
+                  ))}
                 </TableRow>
               ) : (
                 ''
