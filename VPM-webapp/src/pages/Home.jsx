@@ -81,7 +81,7 @@ export const Home = () => {
       </Grid>
       {drag === false ? (
         <Grid item>
-          <DragTableGlobal />
+          <DragTableGlobal drag={drag} />
         </Grid>
       ) : (
         <Grid item>

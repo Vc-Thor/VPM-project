@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   calculateGlobalLeakage,
+  // calculateVectorLeakage,
   newPositionForVector,
   resultValueVectors,
 } from '../../helpers/datas/calculations';
@@ -28,12 +29,12 @@ import { startDeleteVector } from '../../store/vector/thunks';
 import { EditModal } from './editModal';
 import { getVectors } from '../../helpers/api/vector';
 
-export const DragTableGlobal = () => {
+export const DragTableGlobal = ({ drag }) => {
   const dispatch = useDispatch();
   const { vectors } = useSelector((state) => state.vector);
   const [vector, setVector] = useState();
   const [leakVal, sertLeakVal] = useState();
-  const [sums, SetSums] = useState();
+  const [sums, SetSums] = useState({ sumVectors: [], sumLeakage: [] });
   const [state, setState] = useState({
     stop: false,
     vectorId: '',
@@ -47,7 +48,6 @@ export const DragTableGlobal = () => {
   );
   const { result } = generateData(period);
   const arrayPeriod = crearArrayConNumeros(period);
-  console.log(period);
   const onStart = (e, ui) => {
     const position = vectors.find((x) => x.id === ui.node.id).position;
     setState({
@@ -80,15 +80,21 @@ export const DragTableGlobal = () => {
   const newData = transformData(result);
   useEffect(() => {
     const { vectorSums } = resultValueVectors(newData, vector);
-    SetSums(vectorSums);
     getVectors()
       .then((res) => setVector(res.data))
       .catch((err) => console.log(err));
-    const { globalLeakage } = calculateGlobalLeakage(sums, value_leakage);
+    const { globalLeakage, sumsPos } = calculateGlobalLeakage(
+      sums.sumVectors,
+      value_leakage
+    );
+    // calculateVectorLeakage(vector, value_leakage);
+    SetSums((prev) => ({
+      ...prev,
+      sumVectors: vectorSums,
+      sumLeakage: sumsPos,
+    }));
     sertLeakVal(globalLeakage);
   }, [state.position]);
-
-  console.log(vector);
   return (
     <Grid
       container
@@ -141,7 +147,7 @@ export const DragTableGlobal = () => {
                 ''
               )}
               <TableRow>
-                <TableCell>Result</TableCell>
+                <TableCell>Total</TableCell>
               </TableRow>
             </TableBody>
           </Table>
@@ -177,7 +183,9 @@ export const DragTableGlobal = () => {
                         const item = v.vectors.find((v) => v.period === p);
                         return (
                           <TableCell key={p} style={{ textAlign: 'center' }}>
-                            {item && item.value}
+                            {item && leakage
+                              ? item.value
+                              : item.value + (item.value * value_leakage) / 100}
                           </TableCell>
                         );
                       })}
@@ -196,20 +204,21 @@ export const DragTableGlobal = () => {
               )}
               {leakage ? (
                 <TableRow>
-                  {leakVal.map((lv) => (
-                    <TableCell
-                      key={lv.position}
-                      style={{ textAlign: 'center' }}
-                    >
-                      {lv.value}
-                    </TableCell>
-                  ))}
+                  {leakVal &&
+                    leakVal.map((lv) => (
+                      <TableCell
+                        key={lv.position}
+                        style={{ textAlign: 'center' }}
+                      >
+                        {lv.value}
+                      </TableCell>
+                    ))}
                 </TableRow>
               ) : (
                 ''
               )}
               <TableRow>
-                {sums
+                {sums.sumLeakage
                   ?.sort((a, b) => a.position - b.position)
                   .map((r, index) => (
                     <TableCell key={index} style={{ textAlign: 'center' }}>

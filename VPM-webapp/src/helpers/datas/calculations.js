@@ -53,5 +53,29 @@ export const calculateGlobalLeakage = (vectors = [], leakage = 0) => {
     const vectorLeakage = { position: pos, value: valueWLeakage.toFixed(2) };
     globalLeakage.push(vectorLeakage);
   }
-  return { globalLeakage };
+  const sumsPos = vectors.map((base) => ({ ...base }));
+  globalLeakage.forEach((val) => {
+    const findPos = sumsPos.find((v) => v.position === val.position);
+    if (findPos) {
+      findPos.value = (
+        parseFloat(findPos.value) + parseFloat(val.value)
+      ).toFixed(2);
+    }
+  });
+  return { globalLeakage, sumsPos };
 };
+
+// export const calculateVectorLeakage = (vectors = [], leakage = 0) => {
+//   if (!Array.isArray(vectors)) {
+//     return {
+//       vectorLeakage: [],
+//     };
+//   }
+//   const sumVectorLeak = vectors.map((base) => ({ ...base }));
+//   sumVectorLeak.forEach((subVectors) => {
+//     subVectors.vectors.forEach((v) => {
+//       v.value = v.value + v.value * (leakage / 100);
+//     });
+//   });
+//   console.log(sumVectorLeak);
+// };
