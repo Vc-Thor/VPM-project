@@ -10,12 +10,14 @@ import {
   Modal,
   OutlinedInput,
   Typography,
-} from '@mui/material';
-import { useEffect, useState } from 'react';
-import { useForm } from '../../hooks/useForm';
-import { ListZone } from './ListZone';
-import { useDispatch, useSelector } from 'react-redux';
-import { startGetSetting, startPutSetting } from '../../store';
+} from '@mui/material'
+import { useEffect, useState } from 'react'
+import { useForm } from '../../hooks/useForm'
+import { ListZone } from './ListZone'
+import { useActivityStore } from '../../store/activity-store'
+import { useAreaStore } from '../../store/area-store'
+import { useSettingStore } from '../../store/setting-store'
+import { useSubAreaStore } from '../../store/sub-area-store'
 const style = {
   position: 'absolute',
   top: '50%',
@@ -26,27 +28,27 @@ const style = {
   bgcolor: 'background.paper',
   boxShadow: 24,
   p: 4,
-};
+}
 export const SettingModal = () => {
-  const dispatch = useDispatch();
   const {
-    unit: oldUnit,
-    leakage: oldLeakage,
-    value_leakage: oldValue,
-    period: oldPeriod,
-    id,
-  } = useSelector((state) => state.setting);
+    getSetting,
+    unit: u,
+    leakage: l,
+    value_leakage: vl,
+    period: p,
+    putSetting,
+  } = useSettingStore((state) => state)
   const formData = {
-    unit: oldUnit || true, // ? definiendo el tipo de dato
-    leakage: oldLeakage || false,
-    value_leakage: oldValue || 0,
+    unit: u || true, // ? definiendo el tipo de dato
+    leakage: l || false,
+    value_leakage: vl || 0,
     m3kw: 0,
-    period: oldPeriod || 0,
-  };
-  const [open, setOpen] = useState(false);
-  const { areas } = useSelector((state) => state.area);
-  const { subareas } = useSelector((state) => state.subarea);
-  const { activitys } = useSelector((state) => state.activity);
+    period: p || 0,
+  }
+  const [open, setOpen] = useState(false)
+  const areas = useAreaStore((state) => state.areas)
+  const  subareas  = useSubAreaStore((state) => state.subareas)
+  const activitys = useActivityStore((state) => state.activity)
   const {
     unit,
     leakage,
@@ -56,30 +58,29 @@ export const SettingModal = () => {
     formState,
     onInputChange,
     onResetForm,
-  } = useForm(formData);
-
-  const handleOpen = () => setOpen(true);
+  } = useForm(formData)
+  const handleOpen = () => setOpen(true)
   const handleClose = () => {
-    setOpen(false);
-    onResetForm();
-  };
+    setOpen(false)
+    onResetForm()
+  }
   const handleCheckboxChange = (name) => {
-    onInputChange({ target: { name, value: !formState[name] } });
-  };
+    onInputChange({ target: { name, value: !formState[name] } })
+  }
   const onSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     const setting = {
       unit: formState.unit,
       leakage: formState.leakage,
       value_leakage: formState.value_leakage,
       period: formState.period,
       m3kw: formState.m3kw,
-    };
-    dispatch(startPutSetting(id, setting));
-  };
+    }
+    putSetting(setting)
+  }
   useEffect(() => {
-    dispatch(startGetSetting('187a0acb-89cf-45f7-aea6-5b0c3e2c47ab'));
-  }, []);
+    getSetting('187a0acb-89cf-45f7-aea6-5b0c3e2c47ab')
+  }, [])
 
   return (
     <>
@@ -228,9 +229,10 @@ export const SettingModal = () => {
               </Grid>
             </Grid>
             <Button type='submit'>Set</Button>
+            <Button onClick={()=>setOpen(!open)}>Close</Button>
           </Box>
         </form>
       </Modal>
     </>
-  );
-};
+  )
+}

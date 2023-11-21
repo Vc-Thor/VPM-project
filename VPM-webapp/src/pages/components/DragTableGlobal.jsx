@@ -2,18 +2,16 @@ import {
   crearArrayConNumeros,
   generateData,
   transformData,
-} from '../../helpers/datas/data';
-import DeleteIcon from '@mui/icons-material/Delete';
-import Draggable from 'react-draggable';
-
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+} from '../../helpers/datas/data'
+import DeleteIcon from '@mui/icons-material/Delete'
+import Draggable from 'react-draggable'
+import { useEffect, useState } from 'react'
 import {
   calculateGlobalLeakage,
   // calculateVectorLeakage,
   newPositionForVector,
   resultValueVectors,
-} from '../../helpers/datas/calculations';
+} from '../../helpers/datas/calculations'
 import {
   Grid,
   IconButton,
@@ -24,17 +22,17 @@ import {
   TableHead,
   TableRow,
   Typography,
-} from '@mui/material';
-import { startDeleteVector } from '../../store/vector/thunks';
-import { EditModal } from './editModal';
-import { getVectors } from '../../helpers/api/vector';
+} from '@mui/material'
+import { useSettingStore } from '../../store/setting-store'
+import { useVectorStore } from '../../store/vector-store'
+import { EditModal } from './EditModal'
 
-export const DragTableGlobal = ({ drag }) => {
-  const dispatch = useDispatch();
-  const { vectors } = useSelector((state) => state.vector);
-  const [vector, setVector] = useState();
-  const [leakVal, sertLeakVal] = useState();
-  const [sums, SetSums] = useState({ sumVectors: [], sumLeakage: [] });
+export const DragTableGlobal = () => {
+  const { vectors, delVector, putValueVector, putVector } = useVectorStore(
+    (state) => state
+  )
+  const [leakVal, sertLeakVal] = useState()
+  const [sums, SetSums] = useState({ sumVectors: [], sumLeakage: [] })
   const [state, setState] = useState({
     stop: false,
     vectorId: '',
@@ -42,59 +40,55 @@ export const DragTableGlobal = ({ drag }) => {
       x: 0,
       y: 0,
     },
-  });
-  const { period, leakage, value_leakage } = useSelector(
-    (state) => state.setting
-  );
-  const { result } = generateData(period);
-  const arrayPeriod = crearArrayConNumeros(period);
+  })
+  const { period, leakage, value_leakage } = useSettingStore((state) => state)
+  const { result } = generateData(period)
+  const arrayPeriod = crearArrayConNumeros(period)
   const onStart = (e, ui) => {
-    const position = vectors.find((x) => x.id === ui.node.id).position;
+    const position = vectors.find((x) => x.id === ui.node.id).position
     setState({
       vectorId: ui.node.id,
       position: { x: position, y: 0 },
       stop: false,
-    });
-  };
+    })
+  }
 
   const onDrag = (e, ui) => {
     setState({
       vectorId: ui.node.id,
       position: { x: ui.lastX + ui.deltaX, y: ui.lastY + ui.deltaY },
-    });
-  };
+    })
+  }
 
   const onStop = async (e, ui) => {
-    await newPositionForVector(vectors, state);
-    setState({ stop: true });
-  };
+    await newPositionForVector(vectors, state, putValueVector, putVector)
+    setState({ stop: true })
+  }
   const onDeleteVector = async (id = '') => {
-    dispatch(startDeleteVector(id));
-  };
+    delVector(id)
+  }
   const calculateColumnWidth = () => {
-    const tableWidth = 859;
-    const numColumns = arrayPeriod.length;
-    return tableWidth / numColumns;
-  };
+    const tableWidth = 859
+    const numColumns = arrayPeriod.length
+    return tableWidth / numColumns
+  }
 
-  const newData = transformData(result);
+  const newData = transformData(result)
   useEffect(() => {
-    const { vectorSums } = resultValueVectors(newData, vector);
-    getVectors()
-      .then((res) => setVector(res.data))
-      .catch((err) => console.log(err));
+    const { vectorSums } = resultValueVectors(newData, vectors)
     const { globalLeakage, sumsPos } = calculateGlobalLeakage(
       sums.sumVectors,
       value_leakage
-    );
-    // calculateVectorLeakage(vector, value_leakage);
+    )
     SetSums((prev) => ({
       ...prev,
       sumVectors: vectorSums,
       sumLeakage: sumsPos,
-    }));
-    sertLeakVal(globalLeakage);
-  }, [state.position]);
+    }))
+    sertLeakVal(globalLeakage)
+    console.log('ocurre algo')
+  }, [vectors])
+  console.log(sums)
   return (
     <Grid
       container
@@ -178,16 +172,16 @@ export const DragTableGlobal = ({ drag }) => {
                     onDrag={onDrag}
                     onStop={onStop}
                   >
-                    <TableRow id={v.id} key={v.id}>
+                    <TableRow id={v.id} key={v.id} sx={{ cursor: 'pointer' }}>
                       {arrayPeriod.map((p) => {
-                        const item = v.vectors.find((v) => v.period === p);
+                        const item = v.vectors.find((v) => v.period === p)
                         return (
                           <TableCell key={p} style={{ textAlign: 'center' }}>
                             {item && leakage
                               ? item.value
                               : item.value + (item.value * value_leakage) / 100}
                           </TableCell>
-                        );
+                        )
                       })}
                     </TableRow>
                   </Draggable>
@@ -231,5 +225,5 @@ export const DragTableGlobal = ({ drag }) => {
         </TableContainer>
       </Grid>
     </Grid>
-  );
-};
+  )
+}

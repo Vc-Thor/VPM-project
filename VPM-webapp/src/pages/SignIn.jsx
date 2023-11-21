@@ -8,9 +8,8 @@ import {
 } from '@mui/material';
 import { useMemo, useState } from 'react';
 import { useForm } from '../hooks/useForm';
-import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { startLogin } from '../store/auth/thunks';
+import { useAuthSotre } from '../store/auth-store';
 
 const formValidations = {
   email: [(value) => value.length > 1, 'This field is required'],
@@ -24,19 +23,22 @@ export const SignIn = () => {
   const [formSubmitted, setFormSubmitted] = useState(false);
   const { email, pass, onInputChange, emailValid, passValid, formState } =
     useForm(formData, formValidations);
-  const { status, errorMessage } = useSelector((state) => state.auth);
+  const {status,
+    errorMessage,
+    login,
+  } = useAuthSotre((state) => state)
+
   const isChecking = useMemo(() => status === 'checking', [status]);
-  const dispatch = useDispatch();
   const nav = useNavigate();
 
-  const onSubmit = async (e) => {
+  const onSubmit =  (e) => {
     e.preventDefault();
     setFormSubmitted(true);
     const user = {
       email: formState.email,
       pass: formState.pass,
     };
-    dispatch(startLogin(user));
+    login(user)
     nav('VentilationProjectManager/home');
   };
   return (

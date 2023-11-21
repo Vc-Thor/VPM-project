@@ -1,16 +1,20 @@
-import { useMemo, useState } from 'react';
-import { Modal, Box, Typography, Button, Grid, TextField } from '@mui/material';
-import { SelectOption } from './SelectOption';
-import { useForm } from '../../hooks/useForm';
-import { TextFieldCustom } from './TexfieldCustom';
-import { useDispatch, useSelector } from 'react-redux';
-import { startPostVector } from '../../store';
-import { Knobs } from './Knobs';
+import { useMemo, useState } from 'react'
+import { Modal, Box, Typography, Button, Grid, TextField } from '@mui/material'
+import { SelectOption } from './SelectOption'
+import { useForm } from '../../hooks/useForm'
+import { TextFieldCustom } from './TexfieldCustom'
+import { Knobs } from './Knobs'
 import {
   calculateCriteria,
   reverseTransformData,
   transformData,
-} from '../../helpers/datas/data';
+} from '../../helpers/datas/data'
+import { useActivityStore } from '../../store/activity-store'
+import { useAreaStore } from '../../store/area-store'
+import { useSubAreaStore } from '../../store/sub-area-store'
+import { useCriteriaStore } from '../../store/criteria-store'
+import { useAuthSotre } from '../../store/auth-store'
+import { useVectorStore } from '../../store/vector-store'
 const style = {
   position: 'absolute',
   top: '50%',
@@ -22,7 +26,7 @@ const style = {
   borderRadius: 2,
   boxShadow: 24,
   p: 4,
-};
+}
 const formData = {
   vector: '',
   availability: 100,
@@ -35,10 +39,9 @@ const formData = {
   sub_area: '',
   activity: '',
   criteria: '',
-};
+}
 export const AddModal = () => {
-  const dispatch = useDispatch();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false)
   const {
     vector,
     availability,
@@ -53,36 +56,36 @@ export const AddModal = () => {
     onInputChange,
     formState,
     onResetForm,
-  } = useForm(formData);
-  const { criterias } = useSelector((state) => state.criteria);
-  const { areas } = useSelector((state) => state.area);
-  const { subareas } = useSelector((state) => state.subarea);
-  const { activitys } = useSelector((state) => state.activity);
-  const { uid: userUID } = useSelector((state) => state.auth);
-  const { loading } = useSelector((state) => state.vector);
+  } = useForm(formData)
+  const criterias = useCriteriaStore((state) => state.criteria)
+  const areas = useAreaStore((state) => state.areas)
+  const subareas = useSubAreaStore((state) => state.subareas)
+  const activitys = useActivityStore((state) => state.activity)
+  const  uid  = useAuthSotre((state) => state.uid)
+  const { loading, postVector } = useVectorStore((state) => state)
   // const { unit } = useSelector((state) => state.setting);
-  const [valueKnobs, setValueKnobs] = useState([]);
-  const isChecking = useMemo(() => loading === 'checking', [loading]);
+  const [valueKnobs, setValueKnobs] = useState([])
+  const isChecking = useMemo(() => loading === 'checking', [loading])
 
-  const handleOpen = () => setOpen(true);
+  const handleOpen = () => setOpen(true)
   const handleClose = () => {
-    onResetForm();
-    setOpen(false);
-  };
+    onResetForm()
+    setOpen(false)
+  }
 
   const disabled = (valor = '') => {
     const disable = criterias
       .filter((x) => x.id === valor)
-      .map((x) => x.name)[0];
-    return { disable };
-  };
-  const { disable } = disabled(criteria);
-  const { newResult } = calculateCriteria(valueKnobs, disable, formState);
-  const transformedData = transformData(newResult);
+      .map((x) => x.name)[0]
+    return { disable }
+  }
+  const { disable } = disabled(criteria)
+  const { newResult } = calculateCriteria(valueKnobs, disable, formState)
+  const transformedData = transformData(newResult)
   const onSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     const vector = {
-      user_id: userUID,
+      user_id: uid,
       area_id: formState.area,
       sub_area_id: formState.sub_area,
       activity_id: formState.activity,
@@ -93,7 +96,7 @@ export const AddModal = () => {
       area_m2: formState.area_m2,
       fix_q: formState.fix_q,
       availability: formState.availability,
-    };
+    }
     if (
       (disable === 'Fix Q' && formState.fix_q !== 0) ||
       ((disable === 'm/s' || disable === 'ft/m') &&
@@ -101,14 +104,14 @@ export const AddModal = () => {
         formState.area_m2 !== 0) ||
       ((disable === 'm3/kW' || disable === 'cfm/HP') && formState.power_input)
     ) {
-      dispatch(startPostVector(vector, userUID, transformedData));
-      onResetForm();
-      reverseTransformData(transformedData.newData);
-      setOpen(false);
+      postVector(vector, uid, transformedData)
+      onResetForm()
+      reverseTransformData(transformedData.newData)
+      setOpen(false)
     } else {
-      dispatch(startPostVector(vector, userUID, transformedData));
+      postVector(vector, uid, transformedData)
     }
-  };
+  }
   return (
     <>
       <Button sx={{ color: 'white' }} onClick={handleOpen}>
@@ -300,5 +303,5 @@ export const AddModal = () => {
         </form>
       </Modal>
     </>
-  );
-};
+  )
+}

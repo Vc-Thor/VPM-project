@@ -6,44 +6,43 @@ import {
   ListItemText,
   TextField,
   Typography,
-} from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { FixedSizeList } from 'react-window';
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import {
-  startDeleteSubareas,
-  startDeleteActivity,
-  startDeleteArea,
-} from '../../store';
-import { AddZoneModal } from './AddZoneModal';
+} from '@mui/material'
+import DeleteIcon from '@mui/icons-material/Delete'
+import { FixedSizeList } from 'react-window'
+import { useState } from 'react'
+import { AddZoneModal } from './AddZoneModal'
+import { useActivityStore } from '../../store/activity-store'
+import { useAreaStore } from '../../store/area-store'
+import { useSubAreaStore } from '../../store/sub-area-store'
 
 export const ListZone = ({ data = [], title }) => {
-  const [searching, setSearching] = useState('');
-  const dispatch = useDispatch();
+  const [searching, setSearching] = useState('')
+  const deleteActivity = useActivityStore((state) => state.deleteActivity)
+  const delAreas = useAreaStore((state) => state.delAreas)
+  const delSubArea = useSubAreaStore((state) => state.delSubArea)
 
   const deleteZone = async (id = '', title = '') => {
     if (title === 'Area') {
-      dispatch(startDeleteArea(id));
+      delAreas(id)
     }
     if (title === 'Sub Area') {
-      dispatch(startDeleteSubareas(id));
+      delSubArea(id)
     }
     if (title === 'Activity') {
-      dispatch(startDeleteActivity(id));
+      deleteActivity(id)
     }
-  };
+  }
   const handleSearch = (e) => {
-    setSearching(e.target.value);
-  };
+    setSearching(e.target.value)
+  }
 
   const filterData =
     data && Array.isArray(data)
       ? data.filter((item) =>
           item.name.toLowerCase().includes(searching.toLowerCase())
         )
-      : [];
-  const filteredList = filterData.length > 0 ? filterData : data;
+      : []
+  const filteredList = filterData.length > 0 ? filterData : data
   const dataList = ({ index, style }) => (
     <ListItem style={style} key={index} component='div' disablePadding>
       {filteredList[index] ? (
@@ -60,7 +59,7 @@ export const ListZone = ({ data = [], title }) => {
         <ListItemText primary='' />
       )}
     </ListItem>
-  );
+  )
   return (
     <Box
       sx={{
@@ -103,5 +102,5 @@ export const ListZone = ({ data = [], title }) => {
         </Grid>
       </Grid>
     </Box>
-  );
-};
+  )
+}

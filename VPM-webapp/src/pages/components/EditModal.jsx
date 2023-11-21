@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react'
 import {
   Modal,
   Box,
@@ -7,20 +7,24 @@ import {
   Grid,
   TextField,
   IconButton,
-} from '@mui/material';
-import { SelectOption } from './SelectOption';
-import { useForm } from '../../hooks/useForm';
-import { TextFieldCustom } from './TexfieldCustom';
-import { useDispatch, useSelector } from 'react-redux';
-import { startPutVector } from '../../store';
-import { Knobs } from './Knobs';
-import EditIcon from '@mui/icons-material/Edit';
+} from '@mui/material'
+import { SelectOption } from './SelectOption'
+import { useForm } from '../../hooks/useForm'
+import { TextFieldCustom } from './TexfieldCustom'
+import { Knobs } from './Knobs'
+import EditIcon from '@mui/icons-material/Edit'
 import {
   calculateCriteria,
   reverseTransformData,
   transformData,
   transformGraphs,
-} from '../../helpers/datas/data';
+} from '../../helpers/datas/data'
+import { useActivityStore } from '../../store/activity-store'
+import { useAreaStore } from '../../store/area-store'
+import { useCriteriaStore } from '../../store/criteria-store'
+import { useSubAreaStore } from '../../store/sub-area-store'
+import { useAuthSotre } from '../../store/auth-store'
+import { useVectorStore } from '../../store/vector-store'
 const style = {
   position: 'absolute',
   top: '50%',
@@ -31,7 +35,7 @@ const style = {
   bgcolor: 'background.paper',
   boxShadow: 24,
   p: 4,
-};
+}
 
 export const EditModal = ({ vector: editVector }) => {
   const formData = {
@@ -46,9 +50,8 @@ export const EditModal = ({ vector: editVector }) => {
     sub_area: editVector.sub_area_id || '',
     activity: editVector.activity_id || '',
     criteria: editVector.criteria_id || '',
-  };
-  const dispatch = useDispatch();
-  const [open, setOpen] = useState(false);
+  }
+  const [open, setOpen] = useState(false)
   const {
     vector,
     availability,
@@ -63,36 +66,34 @@ export const EditModal = ({ vector: editVector }) => {
     onInputChange,
     formState,
     onResetForm,
-  } = useForm(formData);
+  } = useForm(formData)
 
-  const { criterias } = useSelector((state) => state.criteria);
-  const { areas } = useSelector((state) => state.area);
-  const { subareas } = useSelector((state) => state.subarea);
-  const { activitys } = useSelector((state) => state.activity);
-  const { uid: userUID } = useSelector((state) => state.auth);
-  const { loading } = useSelector((state) => state.vector);
-  const isChecking = useMemo(() => loading === 'checking', [loading]);
-
-  const handleOpen = () => setOpen(true);
+  const criterias = useCriteriaStore((state) => state.criteria)
+  const areas = useAreaStore((state) => state.areas)
+  const subareas = useSubAreaStore((state) => state.subarea)
+  const activitys = useActivityStore((state) => state.activity)
+  const { uid } = useAuthSotre((state) => state.uid)
+  const putVector = useVectorStore((state) => state.putVector)
+  const handleOpen = () => setOpen(true)
   const handleClose = () => {
-    onResetForm();
-    setOpen(false);
-  };
+    onResetForm()
+    setOpen(false)
+  }
 
   const disabled = (valor = '') => {
     const disable = criterias
       .filter((x) => x.id === valor)
-      .map((x) => x.name)[0];
-    return { disable };
-  };
-  const { disable } = disabled(criteria);
-  const transform = transformGraphs(editVector);
-  const { newResult } = calculateCriteria(transform, disable, formState);
-  const transformedData = transformData(newResult);
+      .map((x) => x.name)[0]
+    return { disable }
+  }
+  const { disable } = disabled(criteria)
+  const transform = transformGraphs(editVector)
+  const { newResult } = calculateCriteria(transform, disable, formState)
+  const transformedData = transformData(newResult)
   const onSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     const vector = {
-      user_id: userUID,
+      user_id: uid,
       area_id: formState.area,
       sub_area_id: formState.sub_area,
       activity_id: formState.activity,
@@ -103,7 +104,7 @@ export const EditModal = ({ vector: editVector }) => {
       area_m2: formState.area_m2,
       fix_q: formState.fix_q,
       availability: formState.availability,
-    };
+    }
     if (
       (disable === 'Fix Q' && formState.fix_q !== 0) ||
       ((disable === 'm/s' || disable === 'ft/m') &&
@@ -111,16 +112,15 @@ export const EditModal = ({ vector: editVector }) => {
         formState.area_m2 !== 0) ||
       ((disable === 'm3/kW' || disable === 'cfm/HP') && formState.power_input)
     ) {
-      dispatch(
-        startPutVector(editVector.id, vector, transformedData, editVector)
-      );
-      onResetForm();
-      reverseTransformData(transformedData.newData);
-      setOpen(false);
+      putVector(editVector.id, vector, transformedData, editVector)
+
+      onResetForm()
+      reverseTransformData(transformedData.newData)
+      setOpen(false)
     } else {
-      startPutVector(editVector.id, vector, transformedData, editVector);
+      putVector(editVector.id, vector, transformedData, editVector)
     }
-  };
+  }
 
   return (
     <>
@@ -299,12 +299,7 @@ export const EditModal = ({ vector: editVector }) => {
               }}
             >
               <Grid item>
-                <Button
-                  variant='contained'
-                  type='submit'
-                  color='success'
-                  disabled={isChecking}
-                >
+                <Button variant='contained' type='submit' color='success'>
                   Update Vector
                 </Button>
               </Grid>
@@ -318,5 +313,5 @@ export const EditModal = ({ vector: editVector }) => {
         </form>
       </Modal>
     </>
-  );
-};
+  )
+}

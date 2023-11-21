@@ -1,9 +1,8 @@
 import { Typography, Button, Box, Alert, Grid, TextField } from '@mui/material';
 import { useForm } from '../../hooks/useForm';
 import { Counter } from './Counter';
-import { useDispatch, useSelector } from 'react-redux';
-import { startLogin } from '../../store/auth/thunks';
 import { useNavigate } from 'react-router-dom';
+import { useAuthSotre } from '../../store/auth-store';
 const style = {
   position: 'absolute',
   top: '50%',
@@ -21,16 +20,15 @@ const formData = {
 };
 export const ModalLogin = () => {
   const nav = useNavigate()
-  const { errorMessage, email: userEmail } = useSelector((state) => state.auth);
+  const { errorMessage, email: userEmail ,login} = useAuthSotre((state) => state);
   const { pass, passValid, onInputChange, formState } = useForm(formData);
-  const dispatch = useDispatch();
   const onSubmit = async (e) => {
     e.preventDefault();
     const user = {
       email: userEmail,
       pass: formState.pass,
     };
-    dispatch(startLogin(user));
+    login(user)
     nav('VentilationProjectManager/home');
   };
   return (

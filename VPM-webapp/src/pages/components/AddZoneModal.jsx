@@ -7,16 +7,13 @@ import {
   Modal,
   OutlinedInput,
   Typography,
-} from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import { useState } from 'react';
-import { useForm } from '../../hooks/useForm';
-import { useDispatch } from 'react-redux';
-import {
-  startPostActivity,
-  startPostArea,
-  startPostSubarea,
-} from '../../store';
+} from '@mui/material'
+import AddIcon from '@mui/icons-material/Add'
+import { useState } from 'react'
+import { useForm } from '../../hooks/useForm'
+import { useActivityStore } from '../../store/activity-store'
+import { useAreaStore } from '../../store/area-store'
+import { useSubAreaStore } from '../../store/sub-area-store'
 
 const style = {
   position: 'absolute',
@@ -29,40 +26,42 @@ const style = {
   borderRadius: 2,
   boxShadow: 24,
   p: 4,
-};
+}
 const formData = {
   zone: '',
-};
+}
 export const AddZoneModal = ({ title }) => {
-  const { zone, formState, onInputChange, onResetForm } = useForm(formData);
-  const dispatch = useDispatch();
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
+  const { zone, formState, onInputChange, onResetForm } = useForm(formData)
+  const postActivity = useActivityStore((state) => state.postActivity)
+  const postAreas = useAreaStore((state) => state.postAreas)
+  const postSubAreas = useSubAreaStore((state) => state.postSubAreas)
+  const [open, setOpen] = useState(false)
+  const handleOpen = () => setOpen(true)
   const handleClose = () => {
-    setOpen(false);
-    onResetForm();
-  };
+    setOpen(false)
+    onResetForm()
+  }
   const onSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     if (title === 'Area') {
-      const area = { area: formState.zone };
-      dispatch(startPostArea(area));
-      onResetForm();
-      setOpen(false);
+      const area = { area: formState.zone }
+      postAreas(area)
+      onResetForm()
+      setOpen(false)
     }
     if (title === 'Sub Area') {
-      const subArea = { sub_area: formState.zone };
-      dispatch(startPostSubarea(subArea));
-      onResetForm();
-      setOpen(false);
+      const subArea = { sub_area: formState.zone }
+      postSubAreas(subArea)
+      onResetForm()
+      setOpen(false)
     }
     if (title === 'Activity') {
-      const activity = { activity: formState.zone };
-      dispatch(startPostActivity(activity));
-      onResetForm();
-      setOpen(false);
+      const activity = { activity: formState.zone }
+      postActivity(activity)
+      onResetForm()
+      setOpen(false)
     }
-  };
+  }
   return (
     <>
       <Button
@@ -111,5 +110,5 @@ export const AddZoneModal = ({ title }) => {
         </form>
       </Modal>
     </>
-  );
-};
+  )
+}

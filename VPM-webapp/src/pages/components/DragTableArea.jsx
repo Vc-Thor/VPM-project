@@ -13,10 +13,11 @@ import Draggable from 'react-draggable';
 import { useSelector } from 'react-redux';
 import { tranformAreaVectors } from '../../helpers/datas/transformation';
 import { crearArrayConNumeros } from '../../helpers/datas/data';
+import { useSettingStore } from '../../store/setting-store';
 
 export const DragTableArea = () => {
   const { vectors } = useSelector((state) => state.vector);
-  const { period } = useSelector((state) => state.setting);
+  const period  = useSettingStore((state) => state.period);
   const { areaVectors } = tranformAreaVectors(vectors);
   const arrayPeriod = crearArrayConNumeros(period);
 

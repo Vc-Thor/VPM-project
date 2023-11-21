@@ -18,6 +18,7 @@ module.exports = {
     'array-callback-return': 'off',
     'react/prop-types': 'off',
     'no-extra-boolean-cast': 'off',
+    'eslint-disable-next-line': 'off',
     camelcase: 'off',
   },
-};
+}

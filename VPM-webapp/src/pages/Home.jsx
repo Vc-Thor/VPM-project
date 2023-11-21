@@ -1,41 +1,30 @@
-import { Alert, Button, Grid, Snackbar, Typography } from '@mui/material';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { DragTableGlobal } from './components/DragTableGlobal';
-import { useEffect, useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  startGetActivitys,
-  startGetAreas,
-  startGetCriterias,
-  startGetSubareas,
-  startGetVectors,
-} from '../store';
-import { DragTableArea } from './components/DragTableArea';
+import { Button, Grid, Snackbar, Typography } from '@mui/material'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
+import { DragTableGlobal } from './components/DragTableGlobal'
+import { useEffect, useState } from 'react'
+import { DragTableArea } from './components/DragTableArea'
+import { useActivityStore } from '../store/activity-store'
+import { useAreaStore } from '../store/area-store'
+import { useSubAreaStore } from '../store/sub-area-store'
+import { useCriteriaStore } from '../store/criteria-store'
+import { useVectorStore } from '../store/vector-store'
 export const Home = () => {
-  const [drag, setDrag] = useState(false);
-  const [showSnackbar, setShowSnackbar] = useState(false);
-  const { loading, errorMessage, message, ok } = useSelector(
-    (state) => state.vector
-  );
+  const [drag, setDrag] = useState(false)
+  const [showSnackbar, setShowSnackbar] = useState(false)
+  const getActivys = useActivityStore((state) => state.getActivys)
+  const getAreas = useAreaStore((state) => state.getAreas)
+  const getSubAreas = useSubAreaStore((state) => state.getSubAreas)
+  const getCriteria = useCriteriaStore((state) => state.getCriteria)
+  const getVectors = useVectorStore((state) => state.getVectors)
 
-  const dispatch = useDispatch();
-
-  const isNotLoaded = useMemo(() => loading === 'not-loaded', [loading]);
   useEffect(() => {
-    if (ok === true) {
-      setShowSnackbar(true);
-    } else {
-      setShowSnackbar(true);
-    }
-  }, [isNotLoaded]);
-  useEffect(() => {
-    dispatch(startGetVectors());
-    dispatch(startGetCriterias());
-    dispatch(startGetAreas());
-    dispatch(startGetActivitys());
-    dispatch(startGetSubareas());
-  }, []);
+    getVectors()
+    getCriteria()
+    getAreas()
+    getActivys()
+    getSubAreas()
+  }, [])
 
   return (
     <Grid container sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -45,7 +34,7 @@ export const Home = () => {
         autoHideDuration={3000}
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
-        {ok === true ? (
+        {/* {ok === true ? (
           <Alert onClose={() => setShowSnackbar(false)} severity='success'>
             {message}
           </Alert>
@@ -53,7 +42,7 @@ export const Home = () => {
           <Alert onClose={() => setShowSnackbar(false)} severity='error'>
             {errorMessage}
           </Alert>
-        )}
+        )} */}
       </Snackbar>
       <Grid item sx={{ mt: 3 }}>
         <Typography variant='h4'>Ventilation Project Manager</Typography>
@@ -89,5 +78,5 @@ export const Home = () => {
         </Grid>
       )}
     </Grid>
-  );
-};
+  )
+}

@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux';
+
 import { useState, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { RoutesAuth } from './RoutesAuth';
@@ -6,9 +6,10 @@ import { SignIn } from '../pages/SignIn';
 import jwtDecode from 'jwt-decode';
 import Modal from '@mui/material/Modal';
 import { ModalLogin } from '../pages/components/ModalLogin';
+import { useAuthSotre } from '../store/auth-store';
 
 export const RoutesVPM = () => {
-  const { status, expiresAt, token } = useSelector((state) => state.auth);
+  const { status, expiresAt, token } = useAuthSotre((state) => state)
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
