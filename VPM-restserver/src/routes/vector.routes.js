@@ -1,5 +1,8 @@
 import { Router } from 'express';
 import {
+  equip_vector_value_post,
+  operational_street_post,
+  operational_street_value_post,
   vectorDelete,
   vectorGet,
   vectorGetById,
@@ -32,6 +35,9 @@ vectorRt.post(
   ],
   vectorPost,
 );
+vectorRt.post('/newOp/:vector_id', fieldValidation, operational_street_post);
+vectorRt.post('/newEVV', fieldValidation, equip_vector_value_post);
+vectorRt.post('/newOSV', fieldValidation, operational_street_value_post);
 vectorRt.put(
   '/:id',
   [

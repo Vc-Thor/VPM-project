@@ -11,6 +11,9 @@ export const Criteria = db.define(
       primaryKey: true,
     },
     name: { type: DataTypes.STRING },
+    value: { type: DataTypes.INTEGER },
+    type_vector: { type: DataTypes.INTEGER },
+    other_vector: { type: DataTypes.INTEGER },
   },
   { tableName: 'Criteria', timestamps: false },
 );

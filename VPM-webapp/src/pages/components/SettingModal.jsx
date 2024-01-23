@@ -18,6 +18,7 @@ import { useActivityStore } from '../../store/activity-store'
 import { useAreaStore } from '../../store/area-store'
 import { useSettingStore } from '../../store/setting-store'
 import { useSubAreaStore } from '../../store/sub-area-store'
+import { useCriteriaStore } from '../../store/criteria-store'
 const style = {
   position: 'absolute',
   top: '50%',
@@ -38,16 +39,18 @@ export const SettingModal = () => {
     period: p,
     putSetting,
   } = useSettingStore((state) => state)
+  const { putCriteria, criteria } = useCriteriaStore((state) => state)
+  const filterCriteria = criteria.find((c) => c.name === 'm3/kW')
   const formData = {
     unit: u || true, // ? definiendo el tipo de dato
     leakage: l || false,
     value_leakage: vl || 0,
-    m3kw: 0,
+    m3kw: filterCriteria?.value,
     period: p || 0,
   }
   const [open, setOpen] = useState(false)
   const areas = useAreaStore((state) => state.areas)
-  const  subareas  = useSubAreaStore((state) => state.subareas)
+  const subareas = useSubAreaStore((state) => state.subareas)
   const activitys = useActivityStore((state) => state.activity)
   const {
     unit,
@@ -76,7 +79,11 @@ export const SettingModal = () => {
       period: formState.period,
       m3kw: formState.m3kw,
     }
+    const criteria = {
+      value: formState.m3kw,
+    }
     putSetting(setting)
+    putCriteria(filterCriteria?.id, criteria)
   }
   useEffect(() => {
     getSetting('187a0acb-89cf-45f7-aea6-5b0c3e2c47ab')
@@ -229,7 +236,7 @@ export const SettingModal = () => {
               </Grid>
             </Grid>
             <Button type='submit'>Set</Button>
-            <Button onClick={()=>setOpen(!open)}>Close</Button>
+            <Button onClick={() => setOpen(!open)}>Close</Button>
           </Box>
         </form>
       </Modal>

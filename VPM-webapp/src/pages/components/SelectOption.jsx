@@ -1,4 +1,4 @@
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
 
 export const SelectOption = ({
   value,
@@ -6,11 +6,12 @@ export const SelectOption = ({
   title,
   name,
   size,
+  s,
   data = [],
 }) => {
   return (
     <div>
-      <FormControl sx={{ width: `${size}px` }}>
+      <FormControl sx={{ width: `${size}px` }} size={s}>
         <InputLabel>{title}</InputLabel>
         <Select
           value={value}
@@ -37,5 +38,5 @@ export const SelectOption = ({
         </Select>
       </FormControl>
     </div>
-  );
-};
+  )
+}

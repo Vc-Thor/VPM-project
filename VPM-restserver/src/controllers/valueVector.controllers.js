@@ -114,6 +114,7 @@ export const valuesPost = async (req = request, res = response) => {
     value: value,
     period: period,
   };
+  console.log(period);
   const addValue = ValueVector.build(newValue);
   await addValue.save();
   res.status(200).json({ msg: 'value added to the vector' });

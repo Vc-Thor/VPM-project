@@ -1,26 +1,25 @@
 import {
   Box,
-  Button,
   Divider,
   Drawer,
   IconButton,
   Toolbar,
   Typography,
-} from '@mui/material';
-import LogoutIcon from '@mui/icons-material/Logout';
-import { Link, useNavigate } from 'react-router-dom';
-import { AddModal } from './AddModal';
-import { useAuthSotre } from '../../store/auth-store';
+} from '@mui/material'
+import LogoutIcon from '@mui/icons-material/Logout'
+import { Link, useNavigate } from 'react-router-dom'
+import { useAuthSotre } from '../../store/auth-store'
+import { InputArea } from './InputArea'
 
 export const Sidebar = () => {
   const { user_name, resetUser } = useAuthSotre((state) => state)
-  const nav = useNavigate();
+  const nav = useNavigate()
 
   const onClickLogout = () => {
-    localStorage.clear();
+    localStorage.clear()
     resetUser()
-    nav('/login');
-  };
+    nav('/login')
+  }
   return (
     <Box component='nav'>
       <Drawer
@@ -45,23 +44,11 @@ export const Sidebar = () => {
             </Typography>
           </Link>
         </Toolbar>
+
         <Divider />
-        <Button>
-          <Link to={'home'} style={{ textDecoration: 'none', color: 'white' }}>
-            Table
-          </Link>
-        </Button>
-        <AddModal />
+        <InputArea />
         <Divider />
-        <Button>
-          <Link
-            to={'graphs'}
-            style={{ textDecoration: 'none', color: 'white' }}
-          >
-            Graphs
-          </Link>
-        </Button>
       </Drawer>
     </Box>
-  );
-};
+  )
+}

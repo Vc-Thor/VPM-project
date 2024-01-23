@@ -10,15 +10,19 @@ export const newPositionForVector = async (
   for (let i = 0; i < posVectors.length; i++) {
     const vector = posVectors[i]
     const { id } = vector
-    console.log(vector)
-    const pos = { position: state.position.x }
+    const pos = {
+      position: state.deltaX > 0 ? vector.position - 86 : state.position.x,
+    }
     for (let j = 0; j < vector.vectors.length; j++) {
       const item = vector.vectors[j]
       const { id, position } = item
       const pos = {
-        position: state.position.x + position,
+        position:
+          state.deltaX > 0
+            ? (position - 86).toFixed(2)
+            : (state.position.x + position).toFixed(1),
+        period: state.deltaX > 0 ? item.period - 1 : item.period + 1,
       }
-      console.log(item)
       putValueVector(id, pos)
     }
     putVector(id, pos)

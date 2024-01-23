@@ -10,15 +10,15 @@ import {
 } from '@mui/material'
 import React from 'react'
 import Draggable from 'react-draggable'
-import { tranformAreaVectors } from '../../helpers/datas/transformation'
+import { tranformActivityVectors } from '../../helpers/datas/transformation'
 import { crearArrayConNumeros } from '../../helpers/datas/data'
 import { useSettingStore } from '../../store/setting-store'
 import { useVectorStore } from '../../store/vector-store'
 
-export const DragTableArea = () => {
+export const DragTableActivity = () => {
   const { vectors } = useVectorStore((state) => state)
   const period = useSettingStore((state) => state.period)
-  const { areaVectors } = tranformAreaVectors(vectors)
+  const { activityVectors } = tranformActivityVectors(vectors)
   const arrayPeriod = crearArrayConNumeros(period)
 
   const calculateColumnWidth = () => {
@@ -44,7 +44,7 @@ export const DragTableArea = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell variant='head'>Area Vector</TableCell>
+              <TableCell variant='head'>Activity Vector</TableCell>
               {arrayPeriod.map((p, index) => (
                 <TableCell key={index} variant='head'>
                   Period {p}
@@ -53,8 +53,8 @@ export const DragTableArea = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {Array.isArray(areaVectors) && areaVectors.length !== 0 ? (
-              areaVectors.map((items) => (
+            {Array.isArray(activityVectors) && activityVectors.length !== 0 ? (
+              activityVectors.map((items) => (
                 <Draggable
                   key={items.id}
                   bounds={{ left: 0 }}
@@ -66,7 +66,7 @@ export const DragTableArea = () => {
                   onStop={onStop}
                 >
                   <TableRow id={items.id} key={items.id}>
-                    <TableCell>{items.area}</TableCell>
+                    <TableCell>{items.activity}</TableCell>
                     {arrayPeriod.map((p) => {
                       const item = items.vectors.find((v) => v.period === p)
                       return (

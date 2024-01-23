@@ -5,10 +5,16 @@ import {
   deleteEquipVector,
   getVectorById,
   getVectors,
+  postOperationalStreet,
   postVector,
   putEquipVector,
 } from '../helpers/api/vector'
-import { createValue, putValue } from '../helpers/datas/data'
+import {
+  createValue,
+  createValueEquip,
+  createValueOP,
+  putValue,
+} from '../helpers/datas/data'
 import { newPositionForVector } from '../helpers/datas/calculations'
 import { putValueEquipVector } from '../helpers/api/valueEquipVector'
 
@@ -100,6 +106,32 @@ export const useVectorStore = create(
             if (first) {
               set({ uid: uid, message: message })
               await createValue(userID, newData, uid)
+              const { data } = await getVectors()
+              set({ vectors: data })
+            } else {
+              set({ error: errorMessage })
+            }
+          },
+          postOperationalStreet: async (
+            user_id,
+            vector,
+            equip_value,
+            op_value,
+            value_vector,
+            operational_street
+          ) => {
+            const {
+              ok,
+              id: uid,
+              msg: message,
+              errorMessage,
+            } = await postVector(vector)
+            if (ok) {
+              set({ uid: uid, message: message })
+              await createValue(user_id, value_vector, uid)
+              await createValueOP(op_value, uid)
+              await createValueEquip(equip_value, uid)
+              await postOperationalStreet(operational_street, uid)
               const { data } = await getVectors()
               set({ vectors: data })
             } else {

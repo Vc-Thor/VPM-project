@@ -7,7 +7,6 @@ export const Knobs = ({ transform, valueKnobs, setValueKnobs }) => {
   const { result } = generateData(period)
   const svgRef = useRef(null)
   const [data, setData] = useState(transform || result)
-
   useEffect(() => {
     const svg = d3.select(svgRef.current)
 

@@ -10,11 +10,10 @@ import {
   Legend,
 } from 'chart.js'
 import { Line } from 'react-chartjs-2'
-import { tranformAreaVectors } from '../helpers/datas/transformation'
 import { Grid, Typography } from '@mui/material'
-import { useVectorStore } from '../store/vector-store'
-import { useSettingStore } from '../store/setting-store'
-import { crearArrayConNumeros } from '../helpers/datas/data'
+import { useVectorStore } from '../../store/vector-store'
+import { useSettingStore } from '../../store/setting-store'
+import { crearArrayConNumeros } from '../../helpers/datas/data'
 
 ChartJS.register(
   CategoryScale,
@@ -27,21 +26,20 @@ ChartJS.register(
   Legend
 )
 
-export const AreaGraphs = () => {
+export const GlobalGraph = () => {
   const vectors = useVectorStore((state) => state.vectors)
   const period = useSettingStore((state) => state.period)
   const arrayPeriod = crearArrayConNumeros(period)
 
-  const { areaVectors } = tranformAreaVectors(vectors)
   const generarColorAleatorio = () => {
     const hexColor = Math.floor(Math.random() * 16777215).toString(16)
     return `#${'0'.repeat(6 - hexColor.length)}${hexColor}80`
   }
   const data = {
     labels: arrayPeriod.map((item) => item),
-    datasets: areaVectors.map((item) => ({
+    datasets: vectors.map((item) => ({
       fill: true,
-      label: item.area,
+      label: item.vector,
       data: item.vectors
         .sort((a, b) => a.period - b.period)
         .map((vector) => vector.value),
@@ -65,6 +63,7 @@ export const AreaGraphs = () => {
       y: { stacked: true, title: { display: true, text: 'Value' } },
     },
   }
+  console.log(vectors)
   return (
     <Grid
       container
@@ -79,9 +78,9 @@ export const AreaGraphs = () => {
       }}
     >
       <Grid item sx={{ mt: 4 }}>
-        <Typography variant='h5'>Area Graphs</Typography>
+        <Typography variant='h5'>Global Graphs</Typography>
       </Grid>
-      {Array.isArray(areaVectors) && areaVectors.length !== 0 ? (
+      {Array.isArray(vectors) && vectors.length !== 0 ? (
         <Grid item sx={{ mt: '140px', flexGrow: 1 }}>
           <Line
             options={options}

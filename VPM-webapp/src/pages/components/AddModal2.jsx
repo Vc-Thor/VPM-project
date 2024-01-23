@@ -1,28 +1,25 @@
 import { useMemo, useState } from 'react'
-import { Modal, Box, Typography, Button, Grid, TextField } from '@mui/material'
-import { SelectOption } from './SelectOption'
 import { useForm } from '../../hooks/useForm'
-import { TextFieldCustom } from './TexfieldCustom'
-import { Knobs } from './Knobs'
-import {
-  calculateCriteria,
-  reverseTransformData,
-  transformData,
-} from '../../helpers/datas/data'
-import { useActivityStore } from '../../store/activity-store'
+import { useCriteriaStore } from '../../store/criteria-store'
 import { useAreaStore } from '../../store/area-store'
 import { useSubAreaStore } from '../../store/sub-area-store'
-import { useCriteriaStore } from '../../store/criteria-store'
+import { useActivityStore } from '../../store/activity-store'
 import { useAuthSotre } from '../../store/auth-store'
 import { useVectorStore } from '../../store/vector-store'
-import vectorIcon from '../../assets/vector.png'
+import { calculateCriteriaOS, transformData } from '../../helpers/datas/data'
+import { Modal, Box, Typography, Button, Grid, TextField } from '@mui/material'
+import { TextFieldCustom } from './TexfieldCustom'
+import { SelectOption } from './SelectOption'
+import { KnobsFor2 } from './KnobsFor2'
+import vectorIcon from '../../assets/vector2.png'
+
 const style = {
   position: 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 1000,
-  height: 600,
+  height: 720,
   bgcolor: 'background.paper',
   borderRadius: 2,
   boxShadow: 24,
@@ -35,13 +32,18 @@ const formData = {
   air_velocity: 0,
   area_m2: 0,
   fix_q: 0,
+  power_input_2: 0,
+  air_velocity_2: 0,
+  area_m2_2: 0,
+  fix_q_2: 0,
   position: 0,
   area: '',
   sub_area: '',
   activity: '',
   criteria: '',
+  criteria_2: '',
 }
-export const AddModal = () => {
+export const AddModal2 = () => {
   const [open, setOpen] = useState(false)
   const {
     vector,
@@ -50,10 +52,15 @@ export const AddModal = () => {
     air_velocity,
     area_m2,
     fix_q,
+    power_input_2,
+    air_velocity_2,
+    area_m2_2,
+    fix_q_2,
     area,
     sub_area,
     activity,
     criteria,
+    criteria_2,
     onInputChange,
     formState,
     onResetForm,
@@ -63,10 +70,10 @@ export const AddModal = () => {
   const subareas = useSubAreaStore((state) => state.subareas)
   const activitys = useActivityStore((state) => state.activity)
   const uid = useAuthSotre((state) => state.uid)
-  const { loading, postVector } = useVectorStore((state) => state)
+  const { loading, postOperationalStreet } = useVectorStore((state) => state)
   const [valueKnobs, setValueKnobs] = useState([])
+  const [valueEquipVector, setValueEquipVector] = useState([])
   const isChecking = useMemo(() => loading === 'checking', [loading])
-
   const handleOpen = () => setOpen(true)
   const handleClose = () => {
     onResetForm()
@@ -77,15 +84,19 @@ export const AddModal = () => {
     const disable = criterias
       .filter((x) => x.id === valor)
       .map((x) => x.name)[0]
-    return { disable }
+    return disable
   }
-  const filterCriteria = criterias.find((c) => c.name === 'm3/kW')
   const criteriasfilter = criterias.filter((c) => c.type_vector !== 2)
-  const { disable } = disabled(criteria)
-  const { newResult } = calculateCriteria(
+  const filterCriteria = criterias.find((c) => c.name === 'm3/kW')
+
+  const disable = disabled(criteria)
+  const disable2 = disabled(criteria_2)
+  const { newResult } = calculateCriteriaOS(
     valueKnobs,
     disable,
     formState,
+    disable2,
+    valueEquipVector,
     filterCriteria?.value
   )
   const transformedData = transformData(newResult)
@@ -103,22 +114,23 @@ export const AddModal = () => {
       area_m2: formState.area_m2,
       fix_q: formState.fix_q,
       availability: formState.availability,
-      type_vector: 1,
+      type_vector: 2,
     }
-    if (
-      (disable === 'Fix Q' && formState.fix_q !== 0) ||
-      ((disable === 'm/s' || disable === 'ft/m') &&
-        formState.air_velocity !== 0 &&
-        formState.area_m2 !== 0) ||
-      ((disable === 'm3/kW' || disable === 'cfm/HP') && formState.power_input)
-    ) {
-      postVector(vector, uid, transformedData)
-      onResetForm()
-      reverseTransformData(transformedData.newData)
-      setOpen(false)
-    } else {
-      postVector(vector, uid, transformedData)
+    const operational_street = {
+      criteria_id: formState.criteria_2,
+      power_input_2: formState.power_input_2,
+      air_velocity_2: formState.air_velocity_2,
+      area_m2_2: formState.area_m2_2,
+      fix_q_2: formState.fix_q_2,
     }
+    postOperationalStreet(
+      uid,
+      vector,
+      valueKnobs,
+      valueEquipVector,
+      transformedData,
+      operational_street
+    )
   }
   return (
     <>
@@ -129,7 +141,7 @@ export const AddModal = () => {
         <form onSubmit={onSubmit}>
           <Box sx={style}>
             <Typography sx={{ mb: 4, textAlign: 'center' }} variant='h5'>
-              Equip Vector
+              Equip Vector & Operational Streets
             </Typography>
             <Grid
               container
@@ -260,6 +272,77 @@ export const AddModal = () => {
                   onInputChange={onInputChange}
                 />
               </Grid>
+              <Grid item>
+                <SelectOption
+                  value={criteria_2}
+                  onInputChange={onInputChange}
+                  title={'Criteria 2'}
+                  name={'criteria_2'}
+                  size={180}
+                  data={criteriasfilter}
+                />
+              </Grid>
+              <Grid item>
+                <TextFieldCustom
+                  name={'power_input_2'}
+                  size={145}
+                  title={'Power Input 2'}
+                  symbol={'KW'}
+                  type={'number'}
+                  min={0}
+                  disable={disable2 !== 'm3/kW' && disable !== 'cfm/HP'}
+                  value={power_input_2}
+                  onInputChange={onInputChange}
+                />
+              </Grid>
+              <Grid
+                item
+                sx={{
+                  ml: 2,
+                  display: 'flex',
+                  border: 'solid #000 1px',
+                  mt: 1,
+                }}
+              >
+                <Grid item sx={{ margin: '6px 6px 10px -6px' }}>
+                  <TextFieldCustom
+                    name={'air_velocity_2'}
+                    size={145}
+                    title={'Air Velocity 2'}
+                    symbol={'m/s'}
+                    type={'number'}
+                    min={0}
+                    disable={disable2 !== 'm/s' && disable !== 'ft/m'}
+                    value={air_velocity_2}
+                    onInputChange={onInputChange}
+                  />
+                </Grid>
+                <Grid item sx={{ margin: '6px 10px 10px 6px' }}>
+                  <TextFieldCustom
+                    name={'area_m2_2'}
+                    size={140}
+                    title={'Area m2 2'}
+                    type={'number'}
+                    min={0}
+                    disable={disable2 !== 'm/s' && disable !== 'ft/m'}
+                    value={area_m2_2}
+                    onInputChange={onInputChange}
+                  />
+                </Grid>
+              </Grid>
+              <Grid item>
+                <TextFieldCustom
+                  name={'fix_q_2'}
+                  size={140}
+                  title={'Fix Q 2'}
+                  symbol={'m3/s'}
+                  type={'number'}
+                  disable={disable2 !== 'Fix Q'}
+                  min={0}
+                  value={fix_q_2}
+                  onInputChange={onInputChange}
+                />
+              </Grid>
             </Grid>
             <Grid
               container
@@ -269,7 +352,11 @@ export const AddModal = () => {
               }}
             >
               <Grid item sx={{ mt: 3 }}>
-                <Knobs valueKnobs={valueKnobs} setValueKnobs={setValueKnobs} />
+                <KnobsFor2
+                  valueKnobs={valueKnobs}
+                  setValueKnobs={setValueKnobs}
+                  setValueEquipVector={setValueEquipVector}
+                />
               </Grid>
               <Grid
                 container
@@ -279,7 +366,7 @@ export const AddModal = () => {
                   {newResult.map((result) => (
                     <TextField
                       size='small'
-                      sx={{ width: '60px', p: 1 }}
+                      sx={{ width: '70px', p: 1 }}
                       key={result.x}
                       value={result.y}
                     />

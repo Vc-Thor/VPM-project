@@ -70,7 +70,7 @@ export const EditModal = ({ vector: editVector }) => {
 
   const criterias = useCriteriaStore((state) => state.criteria)
   const areas = useAreaStore((state) => state.areas)
-  const subareas = useSubAreaStore((state) => state.subarea)
+  const subareas = useSubAreaStore((state) => state.subareas)
   const activitys = useActivityStore((state) => state.activity)
   const { uid } = useAuthSotre((state) => state.uid)
   const putVector = useVectorStore((state) => state.putVector)
@@ -79,7 +79,6 @@ export const EditModal = ({ vector: editVector }) => {
     onResetForm()
     setOpen(false)
   }
-
   const disabled = (valor = '') => {
     const disable = criterias
       .filter((x) => x.id === valor)
