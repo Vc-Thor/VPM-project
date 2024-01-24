@@ -15,7 +15,7 @@ import { settingRt } from '../routes/setting.routes.js';
 export class Server {
   constructor() {
     this.app = express();
-    this.port = 80;
+    this.port = 5000;
     this.paths = {
       roles: '/api/role',
       users: '/api/user',
